@@ -1,0 +1,180 @@
+@import "tailwindcss";
+
+@theme {
+  /* Base */
+  --color-ink: #030707;
+  --color-ink-2: #051110;
+
+  /* Verdes (gradientes) */
+  --color-pine-900: #072a22;
+  --color-pine-800: #0d3d31;
+  --color-pine-700: #154d3f;
+  --color-pine-600: #1c6450;
+
+  /* Destaque */
+  --color-gold: #d4af37;
+  --color-gold-soft: #e8cf7e;
+
+  /* Texto */
+  --color-cloud: #ffffff;
+  --color-mist: #b8c2c0;
+
+  /* Fontes */
+  --font-heading: var(--font-playfair), Georgia, serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+
+  /* Easing premium */
+  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  border-color: color-mix(in oklab, var(--color-mist) 12%, transparent);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-cloud);
+  font-family: var(--font-body);
+  font-feature-settings: "ss01", "cv01";
+  overflow-x: hidden;
+}
+
+/* Compensa a navbar fixa ao navegar pelas âncoras */
+section[id] {
+  scroll-margin-top: 6rem;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--color-gold) 35%, transparent);
+  color: #fff;
+}
+
+/* Scrollbar discreta */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ink);
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--color-pine-700) 80%, transparent);
+  border-radius: 999px;
+  border: 2px solid var(--color-ink);
+}
+
+@layer utilities {
+  .font-heading {
+    font-family: var(--font-heading);
+  }
+
+  /* Texto com leve gradiente dourado para headings de destaque */
+  .text-gradient-gold {
+    background: linear-gradient(
+      100deg,
+      var(--color-gold-soft),
+      var(--color-gold) 55%,
+      #b8901f
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .text-gradient-mist {
+    background: linear-gradient(180deg, #ffffff, #c9d3d1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Vidro fosco premium */
+  .glass {
+    background: color-mix(in oklab, var(--color-pine-800) 22%, transparent);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid color-mix(in oklab, var(--color-mist) 14%, transparent);
+  }
+
+  .glass-gold {
+    border: 1px solid color-mix(in oklab, var(--color-gold) 30%, transparent);
+  }
+
+  /* Fundo radial de seção */
+  .bg-pine-radial {
+    background:
+      radial-gradient(
+        60% 80% at 70% 0%,
+        color-mix(in oklab, var(--color-pine-700) 55%, transparent),
+        transparent 60%
+      ),
+      var(--color-ink);
+  }
+
+  .ring-gold-glow {
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--color-gold) 40%, transparent),
+      0 20px 60px -20px color-mix(in oklab, var(--color-gold) 45%, transparent);
+  }
+
+  /* Linha divisória luminosa */
+  .hairline {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in oklab, var(--color-gold) 50%, transparent),
+      transparent
+    );
+  }
+}
+
+/* Glow verde cinematográfico do hero */
+@keyframes glowPulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.06);
+  }
+}
+
+.animate-glow {
+  animation: glowPulse 7s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 6s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-glow,
+  .animate-shimmer {
+    animation: none;
+  }
+}
