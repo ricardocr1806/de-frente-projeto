@@ -14,15 +14,10 @@ jobs:
           node-version: '20'
           cache: 'npm'
       - run: npm ci
-      - run: npm run build
-      - run: ls -la && ls -la out/ || echo "out nao existe, listando .next:" && ls -la .next/ || true
+      - run: npm install -D @cloudflare/next-on-pages
+      - run: npx @cloudflare/next-on-pages
       - run: npm install -g wrangler
-      - run: |
-          if [ -d "out" ]; then
-            wrangler pages deploy out --project-name=de-frente-projeto --branch=main
-          else
-            wrangler pages deploy .next --project-name=de-frente-projeto --branch=main
-          fi
+      - run: wrangler pages deploy .vercel/output/static --project-name=de-frente-projeto --branch=main
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
