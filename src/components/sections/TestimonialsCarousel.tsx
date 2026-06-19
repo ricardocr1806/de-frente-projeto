@@ -57,15 +57,15 @@ export function TestimonialsCarousel() {
               <motion.figure
                 key={index}
                 custom={dir}
-                initial={{ opacity: 0, x: dir * 50, filter: "blur(8px)" }}
-                animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, x: dir * -50, filter: "blur(8px)" }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                initial={{ opacity: 0, x: dir * 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: dir * -40 }}
+                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                 className="glass glass-gold relative mx-auto max-w-3xl rounded-3xl p-8 text-center sm:p-12"
               >
                 <Quote className="mx-auto mb-6 h-9 w-9 text-gold/50" />
                 <blockquote className="font-heading text-xl leading-relaxed text-cloud sm:text-2xl">
-                  “{t.quote}”
+                  "{t.quote}"
                 </blockquote>
                 <figcaption className="mt-8 flex flex-col items-center gap-3">
                   <Stars count={t.rating} />
