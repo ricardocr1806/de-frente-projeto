@@ -6,7 +6,7 @@ import { LeadModalProvider } from "@/components/lead/LeadModalProvider";
 const playfair = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["400", "600", "700"],
   display: "swap",
 });
 
@@ -16,7 +16,7 @@ const inter = Inter({
   display: "swap",
 });
 
-const SITE_URL = "https://defrente.com.br";
+const SITE_URL = "https://lp01.pierryrodrigues.com.br";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
