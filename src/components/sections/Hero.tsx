@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
 import { CtaButton } from "@/components/ui/CtaButton";
 import { fadeUp, stagger } from "@/lib/motion";
 
@@ -13,14 +13,15 @@ const indicators = [
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
+  const prefersReduced = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
 
-  const yImage = useTransform(scrollYProgress, [0, 1], ["0%", "16%"]);
-  const yGlow = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const yText = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
+  const yImage = useTransform(scrollYProgress, [0, 1], prefersReduced ? ["0%", "0%"] : ["0%", "16%"]);
+  const yGlow = useTransform(scrollYProgress, [0, 1], prefersReduced ? ["0%", "0%"] : ["0%", "30%"]);
+  const yText = useTransform(scrollYProgress, [0, 1], prefersReduced ? ["0%", "0%"] : ["0%", "-10%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
 
   return (
@@ -36,9 +37,9 @@ export function Hero() {
       />
 
       <div className="relative mx-auto h-full max-w-7xl lg:grid lg:grid-cols-[1fr_1.1fr] lg:items-center lg:gap-4 lg:px-10">
-        {/* FOTO — grande cobrindo o mobile (texto por cima); coluna direita no desktop */}
+        {/* FOTO */}
         <div className="absolute inset-0 flex items-start justify-center pt-14 lg:static lg:order-2 lg:inset-auto lg:h-[100svh] lg:items-center lg:pt-0">
-          {/* Glow verde cinematográfico */}
+          {/* Glow verde */}
           <motion.div
             aria-hidden
             style={{ y: yGlow }}
@@ -56,9 +57,9 @@ export function Hero() {
 
           <motion.div
             style={{ y: yImage }}
-            initial={{ opacity: 0, scale: 1.06, filter: "blur(14px)" }}
-            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-            transition={{ duration: 1.3, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+            initial={{ opacity: 0, scale: 1.04 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
             className="relative z-10 flex h-full w-full items-start justify-center lg:items-center"
           >
             <Image
@@ -81,7 +82,7 @@ export function Hero() {
           </motion.div>
         </div>
 
-        {/* Gradiente de legibilidade — apenas mobile (texto sobre a foto) */}
+        {/* Gradiente de legibilidade mobile */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 bottom-0 h-[68%] lg:hidden"
@@ -91,7 +92,7 @@ export function Hero() {
           }}
         />
 
-        {/* COPY + CTA — sobre a foto no mobile; coluna esquerda no desktop */}
+        {/* COPY + CTA */}
         <motion.div
           style={{ y: yText, opacity }}
           variants={stagger}
