@@ -28,14 +28,29 @@ export const Route = createFileRoute("/")({
 
 const CHECKOUT_URL = "https://pay.assiny.com.br/1d926e/node/3fZr7o";
 
-function trackCheckout() {
+/**
+ * Parâmetros do produto compartilhados por todos os eventos de conversão
+ * (ViewContent, InitiateCheckout, Purchase). Manter idêntico em todos os
+ * eventos garante o match correto no Gerenciador de Eventos da Meta.
+ */
+export const PIXEL_PRODUCT = {
+  content_ids: ["de-frente-imersao"],
+  content_name: "De Frente com a Homossexualidade",
+  content_type: "product",
+  content_category: "Imersão Online",
+  value: 37.0,
+  currency: "BRL",
+} as const;
+
+/** Dispara um evento padrão do Pixel da Meta com segurança (no-op no SSR). */
+export function trackPixel(event: string, params?: Record<string, unknown>) {
   if (typeof window !== "undefined" && (window as any).fbq) {
-    (window as any).fbq("track", "InitiateCheckout", {
-      content_name: "De Frente com a Homossexualidade",
-      value: 37.00,
-      currency: "BRL",
-    });
+    (window as any).fbq("track", event, params);
   }
+}
+
+function trackCheckout() {
+  trackPixel("InitiateCheckout", PIXEL_PRODUCT);
 }
 
 function CTA({ children, variant = "primary" }: { children: string; variant?: "primary" | "gold" }) {
@@ -73,14 +88,7 @@ function Landing() {
     window.addEventListener("scroll", onScroll, { passive: true });
 
     // ViewContent — produto visualizado
-    if (typeof window !== "undefined" && (window as any).fbq) {
-      (window as any).fbq("track", "ViewContent", {
-        content_name: "De Frente com a Homossexualidade",
-        content_category: "Imersão Online",
-        value: 37.00,
-        currency: "BRL",
-      });
-    }
+    trackPixel("ViewContent", PIXEL_PRODUCT);
 
     // Scroll depth — 25%, 50%, 75%
     const depthsFired = new Set<number>();

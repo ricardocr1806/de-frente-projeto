@@ -15,10 +15,13 @@ function Obrigado() {
   useEffect(() => {
     if (typeof window !== "undefined" && (window as any).fbq) {
       (window as any).fbq("track", "Purchase", {
+        content_ids: ["de-frente-imersao"],
         content_name: "De Frente com a Homossexualidade",
         content_type: "product",
-        value: 37.00,
+        content_category: "Imersão Online",
+        value: 37.0,
         currency: "BRL",
+        num_items: 1,
       });
     }
   }, []);
