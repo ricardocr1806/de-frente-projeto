@@ -116,16 +116,24 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
-        {/* Meta Pixel Base Code */}
+        {/* Meta Pixel Base Code — stub + fila carregam já (nenhum evento se perde);
+            o fbevents.js (pesado) é diferido p/ não bloquear o LCP/TBT no mobile.
+            Carrega no 'load' (+pequeno atraso) OU na 1ª interação, o que vier antes. */}
         <script dangerouslySetInnerHTML={{ __html: `
-          !function(f,b,e,v,n,t,s)
-          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-          n.queue=[];t=b.createElement(e);t.async=!0;
-          t.src=v;s=b.getElementsByTagName(e)[0];
-          s.parentNode.insertBefore(t,s)}(window, document,'script',
-          'https://connect.facebook.net/en_US/fbevents.js');
+          !function(f,b,e,v){
+            if(f.fbq)return;var n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];
+            var loaded=false,load=function(){if(loaded)return;loaded=true;
+              var t=b.createElement(e);t.async=!0;t.src=v;
+              var s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s);};
+            var kick=function(){("requestIdleCallback"in f?requestIdleCallback:setTimeout)(load,{timeout:2500});};
+            if(b.readyState==='complete')setTimeout(kick,800);
+            else f.addEventListener('load',function(){setTimeout(kick,800);});
+            var evs=['scroll','pointerdown','keydown','touchstart'];
+            var onInteract=function(){load();evs.forEach(function(x){f.removeEventListener(x,onInteract);});};
+            evs.forEach(function(x){f.addEventListener(x,onInteract,{passive:true});});
+          }(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
           fbq('init', '1563894625335592');
           fbq('track', 'PageView');
         `}} />

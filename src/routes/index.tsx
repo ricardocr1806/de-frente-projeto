@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import antesDepoisUrl from "@/assets/antes-depois.png";
-import heroMobileUrl from "@/assets/hero-mobile.png";
-import pierryUrl from "@/assets/pierry-rodrigues.jpg";
+import antesDepoisUrl from "@/assets/antes-depois.webp";
+import heroMobileUrl from "@/assets/hero-mobile.webp";
+import pierryUrl from "@/assets/pierry-rodrigues.webp";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -20,6 +20,10 @@ export const Route = createFileRoute("/")({
           "2 dias de transformação, identidade e reconstrução familiar. 04 e 05 de Julho, das 13h às 19h. R$ 19,90.",
       },
       { property: "og:type", content: "website" },
+    ],
+    links: [
+      // Preload da imagem do hero mobile (elemento LCP) p/ pintar o quanto antes
+      { rel: "preload", as: "image", href: heroMobileUrl, fetchPriority: "high" },
     ],
   }),
   component: Landing,
@@ -160,6 +164,10 @@ function Landing() {
             src={heroMobileUrl}
             alt="Antes e Depois — Pierry Rodrigues"
             className="w-full block"
+            width={1280}
+            height={853}
+            fetchPriority="high"
+            decoding="async"
           />
           {/* Degradê suave só na parte de baixo da imagem, transicionando para o fundo preto */}
           <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent to-black" />
