@@ -28,6 +28,30 @@ export const Route = createFileRoute("/")({
 
 const CHECKOUT_URL = "https://pay.assiny.com.br/1d926e/node/3fZr7o";
 
+/** Parâmetros extras (não-utm) que também devem ser repassados ao checkout. */
+const PRESERVED_PARAMS = ["fbclid", "gclid", "ttclid", "gad_source", "msclkid"];
+
+/**
+ * Monta o link do checkout preservando as UTMs (e cliques de anúncio) que vieram
+ * na URL da landing. Sem isso, a origem da venda se perde no checkout.
+ * Inicia com o link puro (SSR) e completa com os parâmetros após montar no client.
+ */
+function useCheckoutUrl() {
+  const [url, setUrl] = useState(CHECKOUT_URL);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const incoming = new URLSearchParams(window.location.search);
+    const dest = new URL(CHECKOUT_URL);
+    incoming.forEach((value, key) => {
+      if (key.toLowerCase().startsWith("utm_") || PRESERVED_PARAMS.includes(key.toLowerCase())) {
+        dest.searchParams.set(key, value);
+      }
+    });
+    setUrl(dest.toString());
+  }, []);
+  return url;
+}
+
 /**
  * Parâmetros do produto compartilhados por todos os eventos de conversão
  * (ViewContent, InitiateCheckout, Purchase). Manter idêntico em todos os
@@ -54,9 +78,10 @@ function trackCheckout() {
 }
 
 function CTA({ children, variant = "primary" }: { children: string; variant?: "primary" | "gold" }) {
+  const checkoutUrl = useCheckoutUrl();
   return (
     <a
-      href={CHECKOUT_URL}
+      href={checkoutUrl}
       target="_blank"
       rel="noopener noreferrer"
       onClick={trackCheckout}
@@ -81,6 +106,7 @@ function SectionLabel({ children }: { children: string }) {
 
 function Landing() {
   const [scrolled, setScrolled] = useState(false);
+  const checkoutUrl = useCheckoutUrl();
 
   useEffect(() => {
     // Botão fixo
@@ -170,7 +196,7 @@ function Landing() {
 
           {/* Botão */}
           <a
-            href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" onClick={trackCheckout}
+            href={checkoutUrl} target="_blank" rel="noopener noreferrer" onClick={trackCheckout}
             className="btn-rainbow inline-flex h-14 w-full items-center justify-center rounded-xl px-6 text-base font-semibold uppercase tracking-wide"
           >
             Quero garantir minha vaga
@@ -199,7 +225,7 @@ function Landing() {
             </div>
             <div className="mt-5">
               <a
-                href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" onClick={trackCheckout}
+                href={checkoutUrl} target="_blank" rel="noopener noreferrer" onClick={trackCheckout}
                 className="btn-rainbow inline-flex h-14 items-center justify-center rounded-xl px-8 text-base font-semibold uppercase tracking-wide"
               >
                 Quero garantir minha vaga
@@ -392,7 +418,7 @@ function Landing() {
                     Para pais, mães ou filhos que vivem esse conflito.
                   </p>
                   <a
-                    href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" onClick={trackCheckout}
+                    href={checkoutUrl} target="_blank" rel="noopener noreferrer" onClick={trackCheckout}
                     className="btn-rainbow mt-5 flex h-14 w-full items-center justify-center rounded-xl text-sm font-semibold uppercase tracking-wide"
                   >
                     Quero garantir minha vaga
@@ -487,7 +513,7 @@ function Landing() {
       {/* STICKY MOBILE CTA */}
       <div className={`fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background/95 p-3 backdrop-blur md:hidden transition-transform duration-300 ${scrolled ? "translate-y-0" : "translate-y-full"}`}>
         <a
-          href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" onClick={trackCheckout}
+          href={checkoutUrl} target="_blank" rel="noopener noreferrer" onClick={trackCheckout}
           className="btn-gold flex h-12 items-center justify-center rounded-xl text-sm font-semibold uppercase tracking-wide"
         >
           Quero garantir minha vaga — R$ 37,00
