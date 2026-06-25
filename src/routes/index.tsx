@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import antesDepoisUrl from "@/assets/antes-depois.png";
 import heroMobileUrl from "@/assets/hero-mobile.png";
 import pierryUrl from "@/assets/pierry-rodrigues.jpg";
-import reflection from "@/assets/reflection.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
