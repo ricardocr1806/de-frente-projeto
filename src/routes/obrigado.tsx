@@ -19,7 +19,7 @@ function Obrigado() {
       (window as any).fbq("track", "Purchase", {
         content_name: "De Frente com a Homossexualidade",
         content_type: "product",
-        value: 37.00,
+        value: 19.90,
         currency: "BRL",
       });
     }

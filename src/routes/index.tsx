@@ -11,13 +11,13 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Imersão online e ao vivo de 2 dias sobre identidade, fé e reconstrução familiar. Para homens em conflito e para pais. Ingresso R$ 37,00.",
+          "Imersão online e ao vivo de 2 dias sobre identidade, fé e reconstrução familiar. Para homens em conflito e para pais. Ingresso R$ 19,90.",
       },
       { property: "og:title", content: "De Frente com a Homossexualidade — Imersão Online" },
       {
         property: "og:description",
         content:
-          "2 dias de transformação, identidade e reconstrução familiar. 04 e 05 de Julho, das 13h às 19h. R$ 37,00.",
+          "2 dias de transformação, identidade e reconstrução familiar. 04 e 05 de Julho, das 13h às 19h. R$ 19,90.",
       },
       { property: "og:type", content: "website" },
     ],
@@ -61,7 +61,7 @@ export const PIXEL_PRODUCT = {
   content_name: "De Frente com a Homossexualidade",
   content_type: "product",
   content_category: "Imersão Online",
-  value: 37.0,
+  value: 19.9,
   currency: "BRL",
 } as const;
 
@@ -189,7 +189,7 @@ function Landing() {
           {/* Preço */}
           <div className="flex flex-col items-center mb-6">
             <span className="text-sm text-white/50 line-through">De R$ 97,00</span>
-            <span className="text-2xl font-bold text-[color:var(--color-gold)]">Por apenas R$ 37,00</span>
+            <span className="text-2xl font-bold text-[color:var(--color-gold)]">Por apenas R$ 19,90</span>
             <span className="text-sm text-white/70 mt-1">Imersão Online · 04 e 05 de Julho · Das 13h às 19h</span>
           </div>
 
@@ -219,7 +219,7 @@ function Landing() {
             </p>
             <div className="mt-5 flex flex-col">
               <span className="text-sm text-primary-foreground/60 line-through">De R$ 97,00</span>
-              <span className="text-2xl font-bold text-[color:var(--color-gold)]">Por apenas R$ 37,00</span>
+              <span className="text-2xl font-bold text-[color:var(--color-gold)]">Por apenas R$ 19,90</span>
               <span className="mt-1 text-sm text-primary-foreground/85">Imersão Online · 04 e 05 de Julho · Das 13h às 19h</span>
             </div>
             <div className="mt-5">
@@ -412,7 +412,7 @@ function Landing() {
                 <div className="rounded-2xl border border-border bg-secondary/60 p-6 text-center">
                   <p className="text-xs uppercase tracking-widest text-muted-foreground">Investimento</p>
                   <p className="text-sm text-muted-foreground line-through">De R$ 97,00</p>
-                  <p className="font-display text-5xl text-[color:var(--color-deep)]">R$ 37,00</p>
+                  <p className="font-display text-5xl text-[color:var(--color-deep)]">R$ 19,90</p>
                   <p className="mt-2 text-xs text-muted-foreground">
                     Para pais, mães ou filhos que vivem esse conflito.
                   </p>
@@ -515,7 +515,7 @@ function Landing() {
           href={checkoutUrl} target="_blank" rel="noopener noreferrer" onClick={trackCheckout}
           className="btn-gold flex h-12 items-center justify-center rounded-xl text-sm font-semibold uppercase tracking-wide"
         >
-          Quero garantir minha vaga — R$ 37,00
+          Quero garantir minha vaga — R$ 19,90
         </a>
       </div>
     </div>
@@ -547,6 +547,6 @@ const faqs = [
     q: "Será um ambiente cristão?",
     a: "Sim. A imersão será fundamentada em princípios bíblicos, apresentados com verdade, responsabilidade, respeito e amor.",
   },
-  { q: "Qual é o valor?", a: "O ingresso custa R$ 37,00." },
+  { q: "Qual é o valor?", a: "O ingresso custa R$ 19,90." },
   { q: "Quando acontecerá?", a: "Nos dias 04 e 05 de Julho, das 13h às 19h, em formato online e ao vivo." },
 ];
