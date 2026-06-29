@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import antesDepoisUrl from "@/assets/antes-depois.webp";
-import heroMobileUrl from "@/assets/hero-mobile.webp";
-import pierryUrl from "@/assets/pierry-rodrigues.webp";
+import { trackLp01 } from "@/lib/analytics";
+import antesDepoisUrl from "@/assets/antes-depois.png";
+import heroMobileUrl from "@/assets/hero-mobile.png";
+import pierryUrl from "@/assets/pierry-rodrigues.jpg";
+import reflection from "@/assets/reflection.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -11,19 +13,15 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Imersão online e ao vivo de 2 dias sobre identidade, fé e reconstrução familiar. Para homens em conflito e para pais. Ingresso R$ 19,90.",
+          "Imersão online e ao vivo de 2 dias sobre identidade, fé e reconstrução familiar. Para homens em conflito e para pais. Ingresso R$ 37,00.",
       },
       { property: "og:title", content: "De Frente com a Homossexualidade — Imersão Online" },
       {
         property: "og:description",
         content:
-          "2 dias de transformação, identidade e reconstrução familiar. 04 e 05 de Julho, das 13h às 19h. R$ 19,90.",
+          "2 dias de transformação, identidade e reconstrução familiar. 04 e 05 de Julho, das 13h às 19h. R$ 37,00.",
       },
       { property: "og:type", content: "website" },
-    ],
-    links: [
-      // Preload da imagem do hero mobile (elemento LCP) p/ pintar o quanto antes
-      { rel: "preload", as: "image", href: heroMobileUrl, fetchPriority: "high" },
     ],
   }),
   component: Landing,
@@ -31,60 +29,21 @@ export const Route = createFileRoute("/")({
 
 const CHECKOUT_URL = "https://pay.assiny.com.br/1d926e/node/3fZr7o";
 
-/** Parâmetros extras (não-utm) que também devem ser repassados ao checkout. */
-const PRESERVED_PARAMS = ["fbclid", "gclid", "ttclid", "gad_source", "msclkid"];
-
-/**
- * Monta o link do checkout preservando as UTMs (e cliques de anúncio) que vieram
- * na URL da landing. Sem isso, a origem da venda se perde no checkout.
- * Inicia com o link puro (SSR) e completa com os parâmetros após montar no client.
- */
-function useCheckoutUrl() {
-  const [url, setUrl] = useState(CHECKOUT_URL);
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const incoming = new URLSearchParams(window.location.search);
-    const dest = new URL(CHECKOUT_URL);
-    incoming.forEach((value, key) => {
-      if (key.toLowerCase().startsWith("utm_") || PRESERVED_PARAMS.includes(key.toLowerCase())) {
-        dest.searchParams.set(key, value);
-      }
-    });
-    setUrl(dest.toString());
-  }, []);
-  return url;
-}
-
-/**
- * Parâmetros do produto compartilhados por todos os eventos de conversão
- * (ViewContent, InitiateCheckout, Purchase). Manter idêntico em todos os
- * eventos garante o match correto no Gerenciador de Eventos da Meta.
- */
-export const PIXEL_PRODUCT = {
-  content_ids: ["de-frente-imersao"],
-  content_name: "De Frente com a Homossexualidade",
-  content_type: "product",
-  content_category: "Imersão Online",
-  value: 19.9,
-  currency: "BRL",
-} as const;
-
-/** Dispara um evento padrão do Pixel da Meta com segurança (no-op no SSR). */
-export function trackPixel(event: string, params?: Record<string, unknown>) {
-  if (typeof window !== "undefined" && (window as any).fbq) {
-    (window as any).fbq("track", event, params);
-  }
-}
-
 function trackCheckout() {
-  trackPixel("InitiateCheckout", PIXEL_PRODUCT);
+  if (typeof window !== "undefined" && (window as any).fbq) {
+    (window as any).fbq("track", "InitiateCheckout", {
+      content_name: "De Frente com a Homossexualidade",
+      value: 37.00,
+      currency: "BRL",
+    });
+  }
+  trackLp01({ data: { event: "checkout_click" } }).catch(() => {});
 }
 
 function CTA({ children, variant = "primary" }: { children: string; variant?: "primary" | "gold" }) {
-  const checkoutUrl = useCheckoutUrl();
   return (
     <a
-      href={checkoutUrl}
+      href={CHECKOUT_URL}
       target="_blank"
       rel="noopener noreferrer"
       onClick={trackCheckout}
@@ -109,15 +68,22 @@ function SectionLabel({ children }: { children: string }) {
 
 function Landing() {
   const [scrolled, setScrolled] = useState(false);
-  const checkoutUrl = useCheckoutUrl();
 
   useEffect(() => {
+    trackLp01({ data: { event: "page_view" } }).catch(() => {});
     // Botão fixo
     const onScroll = () => setScrolled(window.scrollY > 80);
     window.addEventListener("scroll", onScroll, { passive: true });
 
     // ViewContent — produto visualizado
-    trackPixel("ViewContent", PIXEL_PRODUCT);
+    if (typeof window !== "undefined" && (window as any).fbq) {
+      (window as any).fbq("track", "ViewContent", {
+        content_name: "De Frente com a Homossexualidade",
+        content_category: "Imersão Online",
+        value: 37.00,
+        currency: "BRL",
+      });
+    }
 
     // Scroll depth — 25%, 50%, 75%
     const depthsFired = new Set<number>();
@@ -164,10 +130,6 @@ function Landing() {
             src={heroMobileUrl}
             alt="Antes e Depois — Pierry Rodrigues"
             className="w-full block"
-            width={1280}
-            height={853}
-            fetchPriority="high"
-            decoding="async"
           />
           {/* Degradê suave só na parte de baixo da imagem, transicionando para o fundo preto */}
           <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent to-black" />
@@ -197,13 +159,13 @@ function Landing() {
           {/* Preço */}
           <div className="flex flex-col items-center mb-6">
             <span className="text-sm text-white/50 line-through">De R$ 97,00</span>
-            <span className="text-2xl font-bold text-[color:var(--color-gold)]">Por apenas R$ 19,90</span>
+            <span className="text-2xl font-bold text-[color:var(--color-gold)]">Por apenas R$ 37,00</span>
             <span className="text-sm text-white/70 mt-1">Imersão Online · 04 e 05 de Julho · Das 13h às 19h</span>
           </div>
 
           {/* Botão */}
           <a
-            href={checkoutUrl} target="_blank" rel="noopener noreferrer" onClick={trackCheckout}
+            href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" onClick={trackCheckout}
             className="btn-rainbow inline-flex h-14 w-full items-center justify-center rounded-xl px-6 text-base font-semibold uppercase tracking-wide"
           >
             Quero garantir minha vaga
@@ -227,12 +189,12 @@ function Landing() {
             </p>
             <div className="mt-5 flex flex-col">
               <span className="text-sm text-primary-foreground/60 line-through">De R$ 97,00</span>
-              <span className="text-2xl font-bold text-[color:var(--color-gold)]">Por apenas R$ 19,90</span>
+              <span className="text-2xl font-bold text-[color:var(--color-gold)]">Por apenas R$ 37,00</span>
               <span className="mt-1 text-sm text-primary-foreground/85">Imersão Online · 04 e 05 de Julho · Das 13h às 19h</span>
             </div>
             <div className="mt-5">
               <a
-                href={checkoutUrl} target="_blank" rel="noopener noreferrer" onClick={trackCheckout}
+                href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" onClick={trackCheckout}
                 className="btn-rainbow inline-flex h-14 items-center justify-center rounded-xl px-8 text-base font-semibold uppercase tracking-wide"
               >
                 Quero garantir minha vaga
@@ -420,12 +382,12 @@ function Landing() {
                 <div className="rounded-2xl border border-border bg-secondary/60 p-6 text-center">
                   <p className="text-xs uppercase tracking-widest text-muted-foreground">Investimento</p>
                   <p className="text-sm text-muted-foreground line-through">De R$ 97,00</p>
-                  <p className="font-display text-5xl text-[color:var(--color-deep)]">R$ 19,90</p>
+                  <p className="font-display text-5xl text-[color:var(--color-deep)]">R$ 37,00</p>
                   <p className="mt-2 text-xs text-muted-foreground">
                     Para pais, mães ou filhos que vivem esse conflito.
                   </p>
                   <a
-                    href={checkoutUrl} target="_blank" rel="noopener noreferrer" onClick={trackCheckout}
+                    href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" onClick={trackCheckout}
                     className="btn-rainbow mt-5 flex h-14 w-full items-center justify-center rounded-xl text-sm font-semibold uppercase tracking-wide"
                   >
                     Quero garantir minha vaga
@@ -520,10 +482,10 @@ function Landing() {
       {/* STICKY MOBILE CTA */}
       <div className={`fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background/95 p-3 backdrop-blur md:hidden transition-transform duration-300 ${scrolled ? "translate-y-0" : "translate-y-full"}`}>
         <a
-          href={checkoutUrl} target="_blank" rel="noopener noreferrer" onClick={trackCheckout}
+          href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" onClick={trackCheckout}
           className="btn-gold flex h-12 items-center justify-center rounded-xl text-sm font-semibold uppercase tracking-wide"
         >
-          Quero garantir minha vaga — R$ 19,90
+          Quero garantir minha vaga — R$ 37,00
         </a>
       </div>
     </div>
@@ -555,6 +517,6 @@ const faqs = [
     q: "Será um ambiente cristão?",
     a: "Sim. A imersão será fundamentada em princípios bíblicos, apresentados com verdade, responsabilidade, respeito e amor.",
   },
-  { q: "Qual é o valor?", a: "O ingresso custa R$ 19,90." },
+  { q: "Qual é o valor?", a: "O ingresso custa R$ 37,00." },
   { q: "Quando acontecerá?", a: "Nos dias 04 e 05 de Julho, das 13h às 19h, em formato online e ao vivo." },
 ];
