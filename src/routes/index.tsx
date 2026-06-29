@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { trackLp01 } from "@/lib/analytics";
+import { captureUtms, appendUtmsToUrl } from "@/lib/utm";
 import antesDepoisUrl from "@/assets/antes-depois.png";
 import heroMobileUrl from "@/assets/hero-mobile.png";
 import pierryUrl from "@/assets/pierry-rodrigues.jpg";
@@ -29,7 +30,8 @@ export const Route = createFileRoute("/")({
 
 const CHECKOUT_URL = "https://pay.assiny.com.br/1d926e/node/3fZr7o";
 
-function trackCheckout() {
+function trackCheckout(e?: React.MouseEvent<HTMLAnchorElement>) {
+  if (e) { e.preventDefault(); }
   if (typeof window !== "undefined" && (window as any).fbq) {
     (window as any).fbq("track", "InitiateCheckout", {
       content_name: "De Frente com a Homossexualidade",
@@ -38,6 +40,7 @@ function trackCheckout() {
     });
   }
   trackLp01({ data: { event: "checkout_click" } }).catch(() => {});
+  window.open(appendUtmsToUrl(CHECKOUT_URL), "_blank");
 }
 
 function CTA({ children, variant = "primary" }: { children: string; variant?: "primary" | "gold" }) {
@@ -47,6 +50,7 @@ function CTA({ children, variant = "primary" }: { children: string; variant?: "p
       target="_blank"
       rel="noopener noreferrer"
       onClick={trackCheckout}
+      data-cta="main"
       className={`inline-flex h-14 items-center justify-center rounded-xl px-8 text-base font-semibold tracking-wide uppercase ${
         variant === "gold" ? "btn-gold" : "btn-primary"
       }`}
@@ -70,6 +74,7 @@ function Landing() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
+    captureUtms();
     trackLp01({ data: { event: "page_view" } }).catch(() => {});
     // Botão fixo
     const onScroll = () => setScrolled(window.scrollY > 80);
@@ -166,6 +171,7 @@ function Landing() {
           {/* Botão */}
           <a
             href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" onClick={trackCheckout}
+            data-cta="main"
             className="btn-rainbow inline-flex h-14 w-full items-center justify-center rounded-xl px-6 text-base font-semibold uppercase tracking-wide"
           >
             Quero garantir minha vaga
@@ -195,6 +201,7 @@ function Landing() {
             <div className="mt-5">
               <a
                 href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" onClick={trackCheckout}
+                data-cta="main"
                 className="btn-rainbow inline-flex h-14 items-center justify-center rounded-xl px-8 text-base font-semibold uppercase tracking-wide"
               >
                 Quero garantir minha vaga
@@ -388,6 +395,7 @@ function Landing() {
                   </p>
                   <a
                     href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" onClick={trackCheckout}
+                    data-cta="main"
                     className="btn-rainbow mt-5 flex h-14 w-full items-center justify-center rounded-xl text-sm font-semibold uppercase tracking-wide"
                   >
                     Quero garantir minha vaga
@@ -483,6 +491,7 @@ function Landing() {
       <div className={`fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background/95 p-3 backdrop-blur md:hidden transition-transform duration-300 ${scrolled ? "translate-y-0" : "translate-y-full"}`}>
         <a
           href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" onClick={trackCheckout}
+          data-cta="main"
           className="btn-gold flex h-12 items-center justify-center rounded-xl text-sm font-semibold uppercase tracking-wide"
         >
           Quero garantir minha vaga — R$ 37,00
