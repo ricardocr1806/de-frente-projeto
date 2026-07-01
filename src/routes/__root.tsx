@@ -133,6 +133,18 @@ function RootShell({ children }: { children: ReactNode }) {
           <img height="1" width="1" style="display:none"
           src="https://www.facebook.com/tr?id=1563894625335592&ev=PageView&noscript=1"/>
         `}} />
+        {/* Dashboard Analytics Tracker */}
+        <script dangerouslySetInnerHTML={{ __html: `
+          (function(){
+            var S='lp01',U='https://fvsojwkkumjhmvyrvxiy.supabase.co',K='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2c29qd2trdW1qaG12eXJ2eGl5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2ODcwNzUsImV4cCI6MjA5ODI2MzA3NX0.vA14tt6WuoUYmunOSFjxdn8E3Yxm11dikePCz9BahgA';
+            function sid(){var k='_tr_s',v=sessionStorage.getItem(k);if(!v){v=Date.now().toString(36)+Math.random().toString(36).slice(2);sessionStorage.setItem(k,v);}return v;}
+            function ev(t,x){fetch(U+'/rest/v1/events',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json','apikey':K,'Authorization':'Bearer '+K,'Prefer':'return=minimal'},body:JSON.stringify(Object.assign({site_id:S,site_url:location.origin,event_type:t,session_id:sid(),page_url:location.pathname},x||{}))}).catch(function(){});}
+            var t0=Date.now();
+            ev('pageview');
+            addEventListener('pagehide',function(){ev('time_on_page',{time_on_page:Math.round((Date.now()-t0)/1000)});});
+            document.addEventListener('click',function(e){var el=e.target&&e.target.closest('[data-cta]');if(el)ev('click',{button_text:(el.innerText||'').trim().slice(0,100)});});
+          })();
+        `}} />
       </head>
       <body>
         {children}
