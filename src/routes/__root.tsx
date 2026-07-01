@@ -77,30 +77,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "De Frente com a Homossexualidade — Imersão Online" },
-      {
-        name: "description",
-        content:
-          "Imersão online e ao vivo de 2 dias sobre identidade, fé e reconstrução familiar. Dias 4 e 5, às 20h. R$ 19,90.",
-      },
-      { name: "author", content: "De Frente com a Homossexualidade" },
+      { title: "Mapa da Identidade" },
+      { name: "description", content: "Rainbow Identity Quest is an interactive quiz designed to explore and understand LGBTQ+ identity." },
+      { name: "author", content: "Lovable" },
+      { property: "og:title", content: "Mapa da Identidade" },
+      { property: "og:description", content: "Rainbow Identity Quest is an interactive quiz designed to explore and understand LGBTQ+ identity." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { property: "og:title", content: "De Frente com a Homossexualidade — Imersão Online" },
-      { name: "twitter:title", content: "De Frente com a Homossexualidade — Imersão Online" },
-      { name: "description", content: "Online immersion for men and parents navigating family conflicts related to homosexuality." },
-      { property: "og:description", content: "Online immersion for men and parents navigating family conflicts related to homosexuality." },
-      { name: "twitter:description", content: "Online immersion for men and parents navigating family conflicts related to homosexuality." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/2e902a77-59cf-4239-9788-ac29f3a4bd39/id-preview-2cc8380c--aeefb403-2d2a-4c68-a496-93f164630107.lovable.app-1781708076919.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/2e902a77-59cf-4239-9788-ac29f3a4bd39/id-preview-2cc8380c--aeefb403-2d2a-4c68-a496-93f164630107.lovable.app-1781708076919.png" },
+      { name: "twitter:card", content: "summary" },
+      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Mapa da Identidade" },
+      { name: "twitter:description", content: "Rainbow Identity Quest is an interactive quiz designed to explore and understand LGBTQ+ identity." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0f172e9f-02a2-4fc1-82fd-76e08885da93/id-preview-87827580--13e81f26-df38-40e7-98cb-57dad323eb75.lovable.app-1782153546048.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0f172e9f-02a2-4fc1-82fd-76e08885da93/id-preview-87827580--13e81f26-df38-40e7-98cb-57dad323eb75.lovable.app-1782153546048.png" },
     ],
     links: [
-      { rel: "stylesheet", href: appCss },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap",
+        href: appCss,
       },
     ],
   }),
@@ -109,7 +102,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
 });
-
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
@@ -136,13 +128,13 @@ function RootShell({ children }: { children: ReactNode }) {
         {/* Dashboard Analytics Tracker */}
         <script dangerouslySetInnerHTML={{ __html: `
           (function(){
-            var S='lp01',U='https://fvsojwkkumjhmvyrvxiy.supabase.co',K='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2c29qd2trdW1qaG12eXJ2eGl5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2ODcwNzUsImV4cCI6MjA5ODI2MzA3NX0.vA14tt6WuoUYmunOSFjxdn8E3Yxm11dikePCz9BahgA';
+            var S='quiz',U='https://fvsojwkkumjhmvyrvxiy.supabase.co',K='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2c29qd2trdW1qaG12eXJ2eGl5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2ODcwNzUsImV4cCI6MjA5ODI2MzA3NX0.vA14tt6WuoUYmunOSFjxdn8E3Yxm11dikePCz9BahgA';
             function sid(){var k='_tr_s',v=sessionStorage.getItem(k);if(!v){v=Date.now().toString(36)+Math.random().toString(36).slice(2);sessionStorage.setItem(k,v);}return v;}
             function ev(t,x){fetch(U+'/rest/v1/events',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json','apikey':K,'Authorization':'Bearer '+K,'Prefer':'return=minimal'},body:JSON.stringify(Object.assign({site_id:S,site_url:location.origin,event_type:t,session_id:sid(),page_url:location.pathname},x||{}))}).catch(function(){});}
             var t0=Date.now();
             ev('pageview');
             addEventListener('pagehide',function(){ev('time_on_page',{time_on_page:Math.round((Date.now()-t0)/1000)});});
-            document.addEventListener('click',function(e){var el=e.target&&e.target.closest('[data-cta]');if(el)ev('click',{button_text:(el.innerText||'').trim().slice(0,100)});});
+            document.addEventListener('click',function(e){var el=e.target&&e.target.closest('[data-cta]');if(el){var seg=sessionStorage.getItem('_tr_segment');ev('click',{button_text:(el.innerText||'').trim().slice(0,100),cta_type:seg||(el.getAttribute('data-cta')||'main')});}});
           })();
         `}} />
       </head>
