@@ -1,27 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { trackLp01 } from "@/lib/analytics";
 import { captureUtms, appendUtmsToUrl } from "@/lib/utm";
 import antesDepoisUrl from "@/assets/antes-depois.png";
 import heroMobileUrl from "@/assets/hero-mobile.png";
 import pierryUrl from "@/assets/pierry-rodrigues.jpg";
-import reflection from "@/assets/reflection.jpg";
+import Waves from "@/components/ui/Waves";
+import SpotlightCard from "@/components/ui/SpotlightCard";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "De Frente com a Homossexualidade — Imersão Online | 04 e 05 de Julho" },
-      {
-        name: "description",
-        content:
-          "Imersão online e ao vivo de 2 dias sobre identidade, fé e reconstrução familiar. Para homens em conflito e para pais. Ingresso R$ 37,00.",
-      },
+      { name: "description", content: "Imersão online e ao vivo de 2 dias sobre identidade, fé e reconstrução familiar. Para homens em conflito e para pais. Ingresso R$ 37,00." },
       { property: "og:title", content: "De Frente com a Homossexualidade — Imersão Online" },
-      {
-        property: "og:description",
-        content:
-          "2 dias de transformação, identidade e reconstrução familiar. 04 e 05 de Julho, das 13h às 19h. R$ 37,00.",
-      },
+      { property: "og:description", content: "2 dias de transformação, identidade e reconstrução familiar. 04 e 05 de Julho, das 13h às 19h. R$ 37,00." },
       { property: "og:type", content: "website" },
     ],
   }),
@@ -31,469 +24,394 @@ export const Route = createFileRoute("/")({
 const CHECKOUT_URL = "https://pay.assiny.com.br/1d926e/node/3fZr7o";
 
 function trackCheckout(e?: React.MouseEvent<HTMLAnchorElement>) {
-  if (e) { e.preventDefault(); }
+  if (e) e.preventDefault();
   if (typeof window !== "undefined" && (window as any).fbq) {
-    (window as any).fbq("track", "InitiateCheckout", {
-      content_name: "De Frente com a Homossexualidade",
-      value: 37.00,
-      currency: "BRL",
-    });
+    (window as any).fbq("track", "InitiateCheckout", { content_name: "De Frente com a Homossexualidade", value: 37.00, currency: "BRL" });
   }
   trackLp01({ data: { event: "checkout_click" } }).catch(() => {});
   window.open(appendUtmsToUrl(CHECKOUT_URL), "_blank");
 }
 
-function CTA({ children, variant = "primary" }: { children: string; variant?: "primary" | "gold" }) {
+/* Hook de scroll reveal */
+function useReveal(threshold = 0.1) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return [ref, visible] as const;
+}
+
+function Reveal({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
+  const [ref, visible] = useReveal();
   return (
-    <a
-      href={CHECKOUT_URL}
-      target="_blank"
-      rel="noopener noreferrer"
-      onClick={trackCheckout}
-      data-cta="main"
-      className={`inline-flex h-14 items-center justify-center rounded-xl px-8 text-base font-semibold tracking-wide uppercase ${
-        variant === "gold" ? "btn-gold" : "btn-primary"
-      }`}
-    >
+    <div ref={ref} className={className} style={{
+      opacity: visible ? 1 : 0,
+      transform: visible ? "translateY(0)" : "translateY(28px)",
+      filter: visible ? "blur(0)" : "blur(6px)",
+      transition: `opacity 0.8s ${delay}ms cubic-bezier(0.16,1,0.3,1), transform 0.8s ${delay}ms cubic-bezier(0.16,1,0.3,1), filter 0.8s ${delay}ms ease`,
+    }}>
+      {children}
+    </div>
+  );
+}
+
+function SectionLabel({ children }: { children: string }) {
+  return <div className="section-label">{children}</div>;
+}
+
+function CTA({ children, variant = "gold" }: { children: string; variant?: "primary" | "gold" }) {
+  return (
+    <a href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" onClick={trackCheckout} data-cta="main"
+      className={`inline-flex h-14 items-center justify-center rounded-xl px-8 text-base font-bold tracking-wide ${variant === "primary" ? "btn-primary" : "btn-gold"}`}>
       {children}
     </a>
   );
 }
 
-function SectionLabel({ children }: { children: string }) {
-  return (
-    <div className="mb-4 flex items-center justify-center gap-3 text-xs font-medium uppercase tracking-[0.25em] text-[color:var(--color-deep)]/70">
-      <span className="rainbow-dot" />
-      {children}
-      <span className="rainbow-dot" />
-    </div>
-  );
-}
-
 function Landing() {
   const [scrolled, setScrolled] = useState(false);
-
   useEffect(() => {
     captureUtms();
     trackLp01({ data: { event: "page_view" } }).catch(() => {});
-    // Botão fixo
-    const onScroll = () => setScrolled(window.scrollY > 80);
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    // ViewContent — produto visualizado
     if (typeof window !== "undefined" && (window as any).fbq) {
-      (window as any).fbq("track", "ViewContent", {
-        content_name: "De Frente com a Homossexualidade",
-        content_category: "Imersão Online",
-        value: 37.00,
-        currency: "BRL",
-      });
+      (window as any).fbq("track", "ViewContent", { content_name: "De Frente com a Homossexualidade", value: 37.00, currency: "BRL" });
     }
-
-    // Scroll depth — 25%, 50%, 75%
     const depthsFired = new Set<number>();
-    const onScrollDepth = () => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 80);
       const pct = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
-      [25, 50, 75].forEach((depth) => {
-        if (pct >= depth && !depthsFired.has(depth)) {
-          depthsFired.add(depth);
-          if ((window as any).fbq) {
-            (window as any).fbq("trackCustom", "ScrollDepth", { depth: `${depth}%` });
-          }
-        }
-      });
+      [25, 50, 75].forEach(d => { if (pct >= d && !depthsFired.has(d)) { depthsFired.add(d); if ((window as any).fbq) (window as any).fbq("trackCustom", "ScrollDepth", { depth: `${d}%` }); } });
     };
-    window.addEventListener("scroll", onScrollDepth, { passive: true });
-
-    // Tempo na página — 30s, 60s, 2min
+    window.addEventListener("scroll", onScroll, { passive: true });
     const timers = [
       setTimeout(() => { if ((window as any).fbq) (window as any).fbq("trackCustom", "TimeOnPage", { seconds: 30 }); }, 30000),
       setTimeout(() => { if ((window as any).fbq) (window as any).fbq("trackCustom", "TimeOnPage", { seconds: 60 }); }, 60000),
       setTimeout(() => { if ((window as any).fbq) (window as any).fbq("trackCustom", "TimeOnPage", { seconds: 120 }); }, 120000),
     ];
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("scroll", onScrollDepth);
-      timers.forEach(clearTimeout);
-    };
+    return () => { window.removeEventListener("scroll", onScroll); timers.forEach(clearTimeout); };
   }, []);
 
   return (
     <div className="min-h-screen bg-background pb-28 md:pb-0">
 
-      {/* TOP BAR */}
-      <div className="bg-deep-gradient text-primary-foreground">
-        <div className="rainbow-bar" />
-      </div>
-
-      {/* HERO — MOBILE */}
-      <div className="md:hidden bg-black text-white">
-        {/* Imagem completa — rostos visíveis, degradê só na borda inferior */}
-        <div className="relative">
-          <img
-            src={heroMobileUrl}
-            alt="Antes e Depois — Pierry Rodrigues"
-            className="w-full block"
-          />
-          {/* Degradê suave só na parte de baixo da imagem, transicionando para o fundo preto */}
-          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent to-black" />
-        </div>
-
-        {/* Texto abaixo da imagem, sem cobrir nenhum rosto */}
-        <div className="px-6 pt-4 pb-10 text-center">
-          <h1 className="font-display text-3xl leading-tight text-white mb-5">
-            De Frente com a{" "}
-            <span className="rainbow-text">Homossexualidade</span>
-          </h1>
-
-          {/* Destaque principal */}
-          <div className="mb-5 border-l-4 border-[color:var(--color-gold)] pl-4 text-left">
-            <p className="text-[color:var(--color-gold)] uppercase tracking-widest text-sm font-black mb-2">
-              2 dias de imersão
-            </p>
-            <p className="text-base text-white/90 leading-relaxed">
-              Descubra{" "}
-              <span className="text-[color:var(--color-gold)] font-semibold">
-                o que está por trás dos conflitos de identidade
-              </span>
-              , dos afastamentos familiares e encontre um caminho real de restauração para você e para quem você ama.
-            </p>
+      {/* NAVBAR */}
+      <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-black/8 shadow-sm">
+        <div className="max-w-7xl mx-auto px-5 py-3.5 flex items-center justify-between">
+          <div>
+            <span className="font-display font-semibold text-[var(--deep)] text-base leading-tight block">De Frente com a Homossexualidade</span>
+            <span className="text-xs text-[var(--muted-foreground)]">Imersão Online — 04 e 05 de Julho</span>
           </div>
-
-          {/* Preço */}
-          <div className="flex flex-col items-center mb-6">
-            <span className="text-sm text-white/50 line-through">De R$ 97,00</span>
-            <span className="text-2xl font-bold text-[color:var(--color-gold)]">Por apenas R$ 37,00</span>
-            <span className="text-sm text-white/70 mt-1">Imersão Online · 04 e 05 de Julho · Das 13h às 19h</span>
-          </div>
-
-          {/* Botão */}
-          <a
-            href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" onClick={trackCheckout}
-            data-cta="main"
-            className="btn-rainbow inline-flex h-14 w-full items-center justify-center rounded-xl px-6 text-base font-semibold uppercase tracking-wide"
-          >
-            Quero garantir minha vaga
+          <a href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" onClick={trackCheckout} data-cta="main"
+            className="btn-gold inline-flex h-10 items-center gap-1.5 rounded-full px-5 text-sm font-bold">
+            Garantir vaga
           </a>
         </div>
-        <div className="rainbow-bar-thick" />
-      </div>
+      </nav>
 
-      {/* HERO — DESKTOP */}
-      <header className="hidden md:block relative bg-deep-gradient text-primary-foreground overflow-hidden">
-        <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-[color:var(--color-gold)]/10 blur-3xl" aria-hidden />
-
-        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-12 grid-cols-[1.05fr_0.95fr] items-center">
-          <div>
-            <h1 className="font-display text-4xl leading-[1.05] lg:text-5xl text-primary-foreground mb-6">
-              De Frente com a <span className="rainbow-text">Homossexualidade</span>
-            </h1>
-            <p className="text-xl font-semibold text-primary-foreground leading-snug max-w-xl border-l-4 border-[color:var(--color-gold)] pl-4">
-              <span className="block text-[color:var(--color-gold)] uppercase tracking-wider text-sm font-bold mb-1">2 dias de imersão</span>
-              Descubra <span className="text-[color:var(--color-gold)]">o que está por trás dos conflitos de identidade</span>, dos afastamentos familiares e encontre um caminho real de restauração para você e para quem você ama.
-            </p>
-            <div className="mt-5 flex flex-col">
-              <span className="text-sm text-primary-foreground/60 line-through">De R$ 97,00</span>
-              <span className="text-2xl font-bold text-[color:var(--color-gold)]">Por apenas R$ 37,00</span>
-              <span className="mt-1 text-sm text-primary-foreground/85">Imersão Online · 04 e 05 de Julho · Das 13h às 19h</span>
+      {/* HERO — MOBILE */}
+      <div className="md:hidden">
+        <div className="relative bg-[var(--ink)] overflow-hidden">
+          <Waves lineColor="rgba(166,123,20,0.15)" backgroundColor="transparent" waveSpeedX={0.007} waveSpeedY={0.004} waveAmpX={35} waveAmpY={18} xGap={16} yGap={38} />
+          <div className="relative z-10">
+            <div className="relative">
+              <img src={heroMobileUrl} alt="Pierry Rodrigues" className="w-full block" />
+              <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-[var(--ink)]" />
             </div>
-            <div className="mt-5">
-              <a
-                href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" onClick={trackCheckout}
-                data-cta="main"
-                className="btn-rainbow inline-flex h-14 items-center justify-center rounded-xl px-8 text-base font-semibold uppercase tracking-wide"
-              >
+            <div className="px-6 pt-2 pb-10 text-center">
+              <div className="section-label justify-center" style={{color:'#C49B30',marginBottom:'0.75rem'}}>
+                Imersão Online e ao Vivo
+              </div>
+              <h1 className="font-display text-[1.85rem] leading-tight text-white mb-4">
+                De Frente com a <span style={{color:'#C49B30',fontStyle:'italic'}}>Homossexualidade</span>
+              </h1>
+              <div className="mb-5 border-l-[3px] border-[#A67B14] pl-4 text-left">
+                <p className="text-sm text-white/85 leading-relaxed">
+                  Descubra <span style={{color:'#C49B30',fontWeight:600}}>o que está por trás dos conflitos de identidade</span>, dos afastamentos familiares e encontre um caminho real de restauração para você e para quem você ama.
+                </p>
+              </div>
+              <div className="flex flex-col items-center mb-6">
+                <span className="text-sm text-white/45 line-through">De R$ 97,00</span>
+                <span className="text-2xl font-bold" style={{color:'#C49B30'}}>Por apenas R$ 37,00</span>
+                <span className="text-sm text-white/65 mt-1">Online · 04 e 05 de Julho · 13h às 19h</span>
+              </div>
+              <a href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" onClick={trackCheckout} data-cta="main"
+                className="btn-gold inline-flex h-14 w-full items-center justify-center rounded-xl text-base font-bold uppercase tracking-wide">
                 Quero garantir minha vaga
               </a>
             </div>
           </div>
+        </div>
+        <div className="gold-line" />
+      </div>
 
-          <div className="relative mx-auto w-full max-w-md">
-            <div className="absolute -inset-4 rounded-[2rem] bg-[color:var(--color-gold)]/15 blur-2xl" aria-hidden />
-            <div className="rainbow-ring relative">
-              <img
-                src={antesDepoisUrl}
-                alt="Retrato do palestrante da imersão De Frente com a Homossexualidade"
-                width={695}
-                height={760}
-                className="object-cover"
-              />
+      {/* HERO — DESKTOP */}
+      <header className="hidden md:block relative overflow-hidden" style={{background:'var(--ink)',minHeight:'92vh'}}>
+        <div className="absolute inset-0 z-0">
+          <Waves lineColor="rgba(166,123,20,0.12)" backgroundColor="transparent" waveSpeedX={0.007} waveSpeedY={0.004} waveAmpX={45} waveAmpY={22} xGap={20} yGap={45} />
+        </div>
+        <div className="absolute inset-0 z-0" style={{background:'radial-gradient(60% 70% at 30% 50%, rgba(13,27,62,0.6), transparent 70%)'}} />
+
+        <div className="relative z-10 mx-auto grid max-w-7xl gap-8 px-8 py-16 grid-cols-[1.1fr_0.9fr] items-center min-h-[92vh]">
+          <div style={{animation:'fadeUp 1s 0.1s both'}}>
+            <div className="section-label" style={{color:'#C49B30',marginBottom:'1.5rem'}}>
+              Imersão Online e ao Vivo — 04 e 05 de Julho
+            </div>
+            <h1 className="font-display text-5xl xl:text-6xl leading-[1.05] text-white mb-6" style={{textShadow:'0 2px 40px rgba(0,0,0,0.5)'}}>
+              De Frente com a{" "}
+              <em className="not-italic" style={{color:'#C49B30',fontStyle:'italic'}}>Homossexualidade</em>
+            </h1>
+            <div className="border-l-[3px] border-[#A67B14] pl-5 mb-8 max-w-lg">
+              <p className="text-xl text-white/85 leading-relaxed">
+                Descubra <span style={{color:'#C49B30',fontWeight:600}}>o que está por trás dos conflitos de identidade</span> e dos afastamentos familiares — e encontre um caminho real de restauração.
+              </p>
+            </div>
+            <div className="flex flex-col mb-8">
+              <span className="text-sm text-white/40 line-through">De R$ 97,00</span>
+              <span className="font-display text-4xl font-semibold" style={{color:'#C49B30'}}>R$ 37,00</span>
+              <span className="text-sm text-white/60 mt-1">Online · 04 e 05 de Julho · Das 13h às 19h</span>
+            </div>
+            <a href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" onClick={trackCheckout} data-cta="main"
+              className="btn-gold inline-flex h-14 items-center gap-2 rounded-xl px-8 text-base font-bold uppercase tracking-wide">
+              Quero garantir minha vaga →
+            </a>
+            <div className="mt-10 flex gap-10">
+              {[{v:'+240 mil',l:'seguidores'},{v:'Milhares',l:'de famílias impactadas'}].map(i=>(
+                <div key={i.l}>
+                  <div className="font-display text-2xl font-semibold text-white">{i.v}</div>
+                  <div className="text-xs uppercase tracking-wider text-white/50">{i.l}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div style={{animation:'fadeUp 1.1s 0.25s both'}}>
+            <div className="relative mx-auto max-w-md">
+              <div className="absolute -inset-6 rounded-3xl blur-3xl" style={{background:'radial-gradient(circle, rgba(166,123,20,0.25), transparent 70%)'}} />
+              <div className="relative rounded-2xl overflow-hidden border border-white/10" style={{boxShadow:'0 30px 80px rgba(0,0,0,0.5)'}}>
+                <img src={antesDepoisUrl} alt="De Frente com a Homossexualidade" className="w-full block" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[var(--ink)]/60 to-transparent" />
+              </div>
             </div>
           </div>
         </div>
-        <div className="rainbow-bar-thick" />
+        <div className="gold-line relative z-10" />
       </header>
 
       {/* IDENTIFICAÇÃO */}
-      <section className="mx-auto max-w-6xl px-4 py-20">
-        <SectionLabel>Identificação</SectionLabel>
-        <h2 className="mx-auto max-w-3xl text-center text-3xl md:text-4xl">
-          Esta imersão é para vocês que se amam, mas já não sabem como conversar.
-        </h2>
+      <section className="mx-auto max-w-6xl px-4 py-24">
+        <Reveal className="text-center mb-12">
+          <SectionLabel>Para quem é</SectionLabel>
+          <h2 className="mx-auto max-w-3xl text-3xl md:text-4xl">
+            Esta imersão é para vocês que se amam, mas já não sabem como conversar.
+          </h2>
+        </Reveal>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-2">
-          <div className="card-soft p-8">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--color-gold)]">
-              Para filhos que vivem esse conflito
-            </p>
-            <h3 className="mt-3 text-2xl">Você não é o seu rótulo.</h3>
-            <ul className="mt-5 space-y-3 text-[15px] text-foreground/85">
-              {[
-                "Você sente que sua família só consegue enxergar sua sexualidade.",
-                "Você vive conflitos entre seus sentimentos, sua fé e aquilo que acredita.",
-                "Você tem medo de falar e ser rejeitado.",
-                "Você deseja compreender melhor sua história emocional e espiritual.",
-                "Você está cansado de ser tratado como um problema.",
-                "Você quer ser ouvido sem humilhação ou acusação.",
-              ].map((t) => (
-                <li key={t} className="flex gap-3">
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--color-deep)]" />
-                  <span>{t}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-6 rounded-lg bg-secondary p-4 text-sm leading-relaxed text-secondary-foreground">
-              Aqui, você não será reduzido a um rótulo. Você será convidado a olhar para sua história, sua identidade, seus relacionamentos, suas escolhas e sua vida espiritual com honestidade e responsabilidade.
-            </p>
-          </div>
-
-          <div className="card-soft p-8">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--color-gold)]">
-              Para pais e mães
-            </p>
-            <h3 className="mt-3 text-2xl">O amor que não sabe mais o que dizer.</h3>
-            <ul className="mt-5 space-y-3 text-[15px] text-foreground/85">
-              {[
-                "Você ama seu filho, mas não sabe o que falar.",
-                "Você tem medo de que qualquer posicionamento produza afastamento.",
-                "Você sente culpa e se pergunta onde errou.",
-                "As conversas terminam em discussão, silêncio ou defesa.",
-                "Você deseja preservar suas convicções sem perder seu filho.",
-                "Você quer reconstruir a confiança dentro da família.",
-              ].map((t) => (
-                <li key={t} className="flex gap-3">
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--color-deep)]" />
-                  <span>{t}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-6 rounded-lg bg-secondary p-4 text-sm leading-relaxed text-secondary-foreground">
-              Você aprenderá que conexão não significa concordância com tudo. Significa construir um relacionamento seguro o suficiente para que a verdade possa ser ouvida.
-            </p>
-          </div>
+        <div className="grid gap-6 md:grid-cols-2">
+          {[
+            {
+              title: 'Para filhos que vivem esse conflito',
+              sub: 'Você não é o seu rótulo.',
+              items: [
+                'Você sente que sua família só consegue enxergar sua sexualidade.',
+                'Você vive conflitos entre seus sentimentos, sua fé e aquilo que acredita.',
+                'Você tem medo de falar e ser rejeitado.',
+                'Você deseja compreender melhor sua história emocional e espiritual.',
+                'Você está cansado de ser tratado como um problema.',
+                'Você quer ser ouvido sem humilhação ou acusação.',
+              ],
+              note: 'Aqui, você não será reduzido a um rótulo. Você será convidado a olhar para sua história com honestidade e responsabilidade.'
+            },
+            {
+              title: 'Para pais e mães',
+              sub: 'O amor que não sabe mais o que dizer.',
+              items: [
+                'Você ama seu filho, mas não sabe o que falar.',
+                'Você tem medo de que qualquer posicionamento produza afastamento.',
+                'Você sente culpa e se pergunta onde errou.',
+                'As conversas terminam em discussão, silêncio ou defesa.',
+                'Você deseja preservar suas convicções sem perder seu filho.',
+                'Você quer reconstruir a confiança dentro da família.',
+              ],
+              note: 'Você aprenderá que conexão não significa concordância com tudo. Significa construir um relacionamento seguro o suficiente para que a verdade possa ser ouvida.'
+            }
+          ].map((card, i) => (
+            <Reveal key={card.title} delay={i * 100}>
+              <div className="card-soft p-8 h-full">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] mb-2" style={{color:'#A67B14'}}>{card.title}</p>
+                <h3 className="text-2xl mb-5">{card.sub}</h3>
+                <ul className="space-y-3 mb-6">
+                  {card.items.map(t => (
+                    <li key={t} className="flex gap-3 text-[15px] text-[var(--foreground)]/80">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--deep)]" />
+                      <span>{t}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="rounded-xl p-4 text-sm leading-relaxed" style={{background:'var(--secondary)',color:'var(--secondary-foreground)'}}>{card.note}</div>
+              </div>
+            </Reveal>
+          ))}
         </div>
 
-        <div className="mt-10 text-center">
+        <Reveal delay={200} className="mt-12 text-center">
           <CTA>Quero garantir minha vaga</CTA>
-        </div>
+        </Reveal>
       </section>
 
-      {/* CONTEÚDO */}
-      <section className="bg-secondary/60 py-20">
+      {/* CONTEÚDO — SpotlightCard do React Bits */}
+      <section style={{background:'var(--ink)'}} className="py-24">
         <div className="mx-auto max-w-6xl px-4">
-          <SectionLabel>Conteúdo da imersão</SectionLabel>
-          <h2 className="mx-auto max-w-3xl text-center text-3xl md:text-4xl">
-            O que vamos trabalhar durante esses dois dias?
-          </h2>
+          <Reveal className="text-center mb-14">
+            <SectionLabel children="Conteúdo" />
+            <h2 className="text-3xl md:text-4xl" style={{color:'white'}}>O que vamos trabalhar durante esses dois dias?</h2>
+          </Reveal>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
+          <div className="grid gap-5 md:grid-cols-2">
             {[
-              {
-                n: "01",
-                t: "Identidade além da sexualidade",
-                d: "Como separar identidade, sentimentos, comportamentos e escolhas sem reduzir um homem a apenas uma parte da sua história.",
-              },
-              {
-                n: "02",
-                t: "O que existe por trás do silêncio",
-                d: "Dores, rejeições, medos, conflitos espirituais e necessidades de pertencimento que muitas vezes nunca foram verbalizados.",
-              },
-              {
-                n: "03",
-                t: "Pais e filhos diante do conflito",
-                d: "Como trocar acusação, controle e afastamento por escuta, responsabilidade, presença e direção.",
-              },
-              {
-                n: "04",
-                t: "Verdade e amor",
-                d: "Como preservar convicções, falar sobre assuntos difíceis e buscar reconciliação sem usar a verdade como arma.",
-              },
-            ].map((c) => (
-              <div key={c.n} className="card-soft p-7">
-                <div className="flex items-baseline gap-3">
-                  <span className="font-display text-3xl text-[color:var(--color-gold)]">{c.n}</span>
-                  <h3 className="text-xl">{c.t}</h3>
-                </div>
-                <p className="mt-3 text-[15px] leading-relaxed text-foreground/80">{c.d}</p>
-              </div>
+              { n:'01', t:'Identidade além da sexualidade', d:'Como separar identidade, sentimentos, comportamentos e escolhas sem reduzir um homem a apenas uma parte da sua história.' },
+              { n:'02', t:'O que existe por trás do silêncio', d:'Dores, rejeições, medos, conflitos espirituais e necessidades de pertencimento que muitas vezes nunca foram verbalizados.' },
+              { n:'03', t:'Pais e filhos diante do conflito', d:'Como trocar acusação, controle e afastamento por escuta, responsabilidade, presença e direção.' },
+              { n:'04', t:'Verdade e amor', d:'Como preservar convicções, falar sobre assuntos difíceis e buscar reconciliação sem usar a verdade como arma.' },
+            ].map((c, i) => (
+              <Reveal key={c.n} delay={i * 70}>
+                <SpotlightCard className="h-full rounded-2xl border-white/10" spotlightColor="rgba(196,155,48,0.18)" style={{background:'rgba(255,255,255,0.05)'}}>
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="font-display text-3xl font-semibold" style={{color:'#C49B30'}}>{c.n}</span>
+                    <div className="h-px flex-1" style={{background:'rgba(255,255,255,0.1)'}} />
+                  </div>
+                  <h3 className="text-xl mb-3" style={{color:'white'}}>{c.t}</h3>
+                  <p className="text-[15px] leading-relaxed" style={{color:'rgba(255,255,255,0.6)'}}>{c.d}</p>
+                </SpotlightCard>
+              </Reveal>
             ))}
           </div>
 
-          <blockquote className="mx-auto mt-12 max-w-3xl text-center font-display text-2xl italic leading-snug text-[color:var(--color-deep)] md:text-3xl">
-            "O comportamento pode iniciar uma discussão. Mas é o coração que precisa ser alcançado."
-          </blockquote>
+          <Reveal delay={300} className="text-center mt-14">
+            <blockquote className="mx-auto max-w-2xl font-display text-2xl italic leading-snug" style={{color:'#C49B30'}}>
+              "O comportamento pode iniciar uma discussão. Mas é o coração que precisa ser alcançado."
+            </blockquote>
+          </Reveal>
         </div>
       </section>
 
       {/* OFERTA */}
-      <section id="inscricao" className="mx-auto max-w-4xl px-4 py-20">
-        <SectionLabel>Sua participação</SectionLabel>
-        <h2 className="mx-auto max-w-3xl text-center text-3xl md:text-4xl">
-          Dois dias podem iniciar uma conversa que sua família vem adiando há anos.
-        </h2>
-
-        <div className="mt-12">
-          <div className="card-soft overflow-hidden">
-            <div className="rainbow-bar-thick" />
-            <div className="bg-deep-gradient p-7 text-primary-foreground md:p-10">
-              <p className="text-xs uppercase tracking-[0.25em] text-[color:var(--color-gold)]">
-                Imersão online e ao vivo
-              </p>
-              <h3 className="mt-2 font-display text-3xl text-primary-foreground md:text-4xl">
-                De Frente com a Homossexualidade
-              </h3>
-              <p className="mt-1 text-sm text-primary-foreground/80">
-                2 Dias de Transformação, Identidade e Reconstrução Familiar
-              </p>
-              <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1 text-sm text-primary-foreground/90">
-                <span>04 e 05 de Julho</span>
-                <span>Das 13h às 19h</span>
-                <span>Online e ao vivo</span>
+      <section id="inscricao" className="mx-auto max-w-4xl px-4 py-24">
+        <Reveal>
+          <SectionLabel children="Sua participação" />
+          <h2 className="mx-auto max-w-3xl text-center text-3xl md:text-4xl mb-12">
+            Dois dias podem iniciar uma conversa que sua família vem adiando há anos.
+          </h2>
+          <div className="card-soft overflow-hidden border-[rgba(166,123,20,0.20)]">
+            <div className="gold-line" />
+            <div className="p-8 md:p-12" style={{background:'var(--ink)'}}>
+              <p className="text-xs uppercase tracking-[0.25em] font-bold mb-1" style={{color:'#C49B30'}}>Imersão online e ao vivo</p>
+              <h3 className="font-display text-3xl md:text-4xl text-white">De Frente com a Homossexualidade</h3>
+              <p className="mt-1 text-sm" style={{color:'rgba(255,255,255,0.65)'}}>2 Dias de Transformação, Identidade e Reconstrução Familiar</p>
+              <div className="flex flex-wrap gap-x-5 gap-y-1 text-sm mt-3" style={{color:'rgba(255,255,255,0.8)'}}>
+                <span>📅 04 e 05 de Julho</span><span>⏰ 13h às 19h</span><span>💻 Online ao vivo</span>
               </div>
             </div>
-            <div className="p-7 md:p-10">
-              <div className="grid gap-8 md:grid-cols-[1.1fr_0.9fr] md:items-center">
-                <div>
-                  <p className="text-sm font-semibold uppercase tracking-widest text-[color:var(--color-deep)]">
-                    Durante a imersão você receberá:
-                  </p>
-                  <ul className="mt-4 space-y-2 text-[15px] text-foreground/85">
-                    {[
-                      "2 Dias de conteúdo ao vivo",
-                      "Princípios sobre identidade e pertencimento",
-                      "Direcionamentos para pais, mães e filhos",
-                      "Ferramentas para comunicação familiar",
-                      "Reflexões bíblicas",
-                      "Exercícios de autoavaliação",
-                      "Orientações para iniciar um processo de reconexão",
-                    ].map((t) => (
-                      <li key={t} className="flex gap-3">
-                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--color-gold)]" />
-                        <span>{t}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="rounded-2xl border border-border bg-secondary/60 p-6 text-center">
-                  <p className="text-xs uppercase tracking-widest text-muted-foreground">Investimento</p>
-                  <p className="text-sm text-muted-foreground line-through">De R$ 97,00</p>
-                  <p className="font-display text-5xl text-[color:var(--color-deep)]">R$ 37,00</p>
-                  <p className="mt-2 text-xs text-muted-foreground">
-                    Para pais, mães ou filhos que vivem esse conflito.
-                  </p>
-                  <a
-                    href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" onClick={trackCheckout}
-                    data-cta="main"
-                    className="btn-rainbow mt-5 flex h-14 w-full items-center justify-center rounded-xl text-sm font-semibold uppercase tracking-wide"
-                  >
-                    Quero garantir minha vaga
-                  </a>
-                  <div className="rainbow-bar mt-4 opacity-80" aria-hidden />
-                </div>
+            <div className="gold-line" />
+            <div className="p-8 md:p-12 grid gap-8 md:grid-cols-[1.1fr_0.9fr] md:items-center">
+              <div>
+                <p className="text-sm font-bold uppercase tracking-widest text-[var(--deep)] mb-4">Durante a imersão você receberá:</p>
+                <ul className="space-y-2.5 text-[15px]">
+                  {['2 Dias de conteúdo ao vivo','Princípios sobre identidade e pertencimento','Direcionamentos para pais, mães e filhos','Ferramentas para comunicação familiar','Reflexões bíblicas','Exercícios de autoavaliação','Orientações para iniciar um processo de reconexão'].map(t => (
+                    <li key={t} className="flex gap-3">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full" style={{background:'#A67B14'}} />
+                      <span>{t}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="rounded-2xl border p-8 text-center" style={{background:'var(--secondary)'}}>
+                <p className="text-xs uppercase tracking-widest text-[var(--muted-foreground)] mb-1">Investimento</p>
+                <p className="text-sm text-[var(--muted-foreground)] line-through">De R$ 97,00</p>
+                <p className="font-display text-6xl font-semibold text-[var(--deep)]">R$ 37<span style={{fontSize:'2rem',color:'#A67B14'}}>,00</span></p>
+                <a href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" onClick={trackCheckout} data-cta="main"
+                  className="btn-gold mt-6 flex h-14 w-full items-center justify-center rounded-xl text-sm font-bold uppercase tracking-wide">
+                  Quero garantir minha vaga
+                </a>
+                <p className="text-xs text-[var(--muted-foreground)] mt-3">Para pais, mães ou filhos que vivem esse conflito.</p>
               </div>
             </div>
           </div>
-        </div>
+        </Reveal>
       </section>
 
-      {/* QUEM É PIERRY RODRIGUES */}
-      <section className="bg-secondary/60 py-20">
+      {/* PIERRY */}
+      <section style={{background:'var(--secondary)'}} className="py-24">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="grid gap-10 md:grid-cols-[0.9fr_1.1fr] md:items-center">
-            <div className="relative mx-auto w-full max-w-sm md:max-w-md">
-              <div className="absolute -inset-4 rounded-[2rem] bg-[color:var(--color-gold)]/15 blur-2xl" aria-hidden />
-              <div className="rainbow-ring relative">
-                <img
-                  src={pierryUrl}
-                  alt="Pierry Rodrigues — Imersão De Frente com a Homossexualidade"
-                  width={695}
-                  height={760}
-                  loading="lazy"
-                  className="object-cover"
-                />
+          <div className="grid gap-12 md:grid-cols-[0.9fr_1.1fr] md:items-center">
+            <Reveal>
+              <div className="relative mx-auto w-full max-w-sm md:max-w-md">
+                <div className="absolute -inset-4 rounded-3xl blur-2xl" style={{background:'rgba(166,123,20,0.15)'}} />
+                <div className="relative rounded-2xl overflow-hidden border" style={{borderColor:'rgba(166,123,20,0.25)',boxShadow:'0 30px 60px rgba(13,27,62,0.15)'}}>
+                  <img src={pierryUrl} alt="Pierry Rodrigues" className="w-full block" />
+                  <div className="absolute bottom-0 inset-x-0 p-5" style={{background:'linear-gradient(to top, rgba(13,27,62,0.9), transparent)'}}>
+                    <div className="text-xs uppercase tracking-wider mb-1" style={{color:'#C49B30'}}>Mentor</div>
+                    <div className="font-display text-lg text-white">Pierry Rodrigues</div>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div>
-              <p className="mb-3 text-xs font-medium uppercase tracking-[0.25em] text-[color:var(--color-deep)]/70">
-                <span className="rainbow-dot inline-block mr-2" />
-                Quem conduz
-              </p>
+            </Reveal>
+            <Reveal delay={100}>
+              <SectionLabel children="Quem conduz" />
               <h2 className="text-3xl md:text-4xl">Quem é Pierry Rodrigues?</h2>
-              <div className="mt-5 space-y-4 text-[15px] leading-relaxed text-foreground/80">
-                <p>
-                  Pierry Rodrigues dedica sua vida a ajudar pessoas e famílias a compreender questões profundas de identidade, pertencimento e restauração.
-                </p>
-                <p>
-                  Ao longo dos últimos anos, tem acompanhado histórias de transformação familiar, reconexão entre pais e filhos e processos de restauração emocional e espiritual.
-                </p>
-                <p>
-                  Sua abordagem une princípios bíblicos, comportamento humano, relacionamentos familiares e experiências práticas vividas ao lado de centenas de pessoas que buscavam respostas para dores que pareciam impossíveis de resolver.
-                </p>
-                <p className="font-semibold text-foreground">
-                  Seu compromisso não é com julgamentos.
-                </p>
-                <p className="font-semibold text-[color:var(--color-deep)]">
-                  Seu compromisso é com a verdade, a restauração e a esperança.
-                </p>
+              <div className="mt-5 space-y-4 text-[15px] leading-relaxed text-[var(--foreground)]/80">
+                <p>Pierry Rodrigues dedica sua vida a ajudar pessoas e famílias a compreender questões profundas de identidade, pertencimento e restauração.</p>
+                <p>Ao longo dos últimos anos, tem acompanhado histórias de transformação familiar, reconexão entre pais e filhos e processos de restauração emocional e espiritual.</p>
+                <p>Sua abordagem une princípios bíblicos, comportamento humano, relacionamentos familiares e experiências práticas vividas ao lado de centenas de pessoas.</p>
+                <p className="font-bold text-[var(--foreground)]">Seu compromisso não é com julgamentos.</p>
+                <p className="font-bold" style={{color:'var(--deep)'}}>Seu compromisso é com a verdade, a restauração e a esperança.</p>
               </div>
-            </div>
+              <div className="mt-8">
+                <CTA>Quero participar da imersão</CTA>
+              </div>
+            </Reveal>
           </div>
         </div>
       </section>
 
       {/* FAQ */}
-      <section className="mx-auto max-w-3xl px-4 py-20">
-        <SectionLabel>Perguntas frequentes</SectionLabel>
-        <h2 className="text-center text-3xl md:text-4xl">Perguntas frequentes</h2>
-
-        <div className="mt-10 space-y-3">
-          {faqs.map((f) => (
-            <details
-              key={f.q}
-              className="group card-soft px-5 py-4 transition-shadow open:shadow-[var(--shadow-soft)]"
-            >
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[15px] font-semibold text-[color:var(--color-deep)]">
-                {f.q}
-                <span className="text-2xl text-[color:var(--color-gold)] transition-transform group-open:rotate-45">
-                  +
-                </span>
-              </summary>
-              <p className="mt-3 text-[15px] leading-relaxed text-foreground/80">{f.a}</p>
-            </details>
+      <section className="mx-auto max-w-3xl px-4 py-24">
+        <Reveal className="text-center mb-12">
+          <SectionLabel children="Dúvidas" />
+          <h2 className="text-3xl md:text-4xl">Perguntas frequentes</h2>
+        </Reveal>
+        <div className="space-y-3">
+          {faqs.map((f, i) => (
+            <Reveal key={f.q} delay={i * 35}>
+              <details className="group card-soft px-6 py-4">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[15px] font-semibold text-[var(--deep)]">
+                  {f.q}
+                  <span className="text-2xl transition-transform group-open:rotate-45" style={{color:'#A67B14'}}>+</span>
+                </summary>
+                <p className="mt-3 text-[15px] leading-relaxed text-[var(--foreground)]/75">{f.a}</p>
+              </details>
+            </Reveal>
           ))}
         </div>
       </section>
 
-      <footer className="bg-[color:var(--color-ink)] px-4 py-10 text-sm text-white/70">
-        <div className="mx-auto max-w-6xl space-y-4">
-          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-4 text-xs">
-            <p>© {new Date().getFullYear()} De Frente com a Homossexualidade — Imersão Online.</p>
-            <a href="/privacidade" className="underline-offset-4 hover:underline">
-              Política de Privacidade
-            </a>
-          </div>
+      {/* FOOTER */}
+      <footer style={{background:'var(--ink)'}} className="px-4 py-10 text-sm text-white/55">
+        <div className="gold-line mb-8 opacity-30" />
+        <div className="mx-auto max-w-6xl flex flex-wrap items-center justify-between gap-3 text-xs">
+          <p>© {new Date().getFullYear()} De Frente com a Homossexualidade — Imersão Online.</p>
+          <a href="/privacidade" className="underline-offset-4 hover:underline">Política de Privacidade</a>
         </div>
       </footer>
 
       {/* STICKY MOBILE CTA */}
-      <div className={`fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background/95 p-3 backdrop-blur md:hidden transition-transform duration-300 ${scrolled ? "translate-y-0" : "translate-y-full"}`}>
-        <a
-          href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" onClick={trackCheckout}
-          data-cta="main"
-          className="btn-gold flex h-12 items-center justify-center rounded-xl text-sm font-semibold uppercase tracking-wide"
-        >
+      <div className={`fixed inset-x-0 bottom-0 z-50 border-t border-border bg-white/95 p-3 backdrop-blur md:hidden transition-transform duration-300 ${scrolled ? 'translate-y-0' : 'translate-y-full'}`}>
+        <a href={CHECKOUT_URL} target="_blank" rel="noopener noreferrer" onClick={trackCheckout} data-cta="main"
+          className="btn-gold flex h-12 items-center justify-center rounded-xl text-sm font-bold uppercase tracking-wide">
           Quero garantir minha vaga — R$ 37,00
         </a>
       </div>
@@ -502,30 +420,12 @@ function Landing() {
 }
 
 const faqs = [
-  {
-    q: "A imersão é somente para pais?",
-    a: "Não. Ela foi preparada para pais e mães, mas também para filhos — meninos e meninas — que vivem conflitos relacionados à homossexualidade, identidade, fé e relacionamento familiar.",
-  },
-  {
-    q: "Mulheres homossexuais podem participar?",
-    a: "Sim, esse conteúdo foi desenvolvido para homens e para mulheres..",
-  },
-  {
-    q: "Preciso participar com meus pais ou com meu filho?",
-    a: "Não. Cada pessoa pode participar individualmente. Caso pais e filho desejem participar juntos, também será possível.",
-  },
-  {
-    q: "A imersão promete mudar a orientação sexual?",
-    a: "Não. A imersão não apresenta promessa de mudança de orientação sexual. O trabalho está concentrado em identidade, história pessoal, responsabilidade, espiritualidade, comunicação e restauração familiar.",
-  },
-  {
-    q: "A imersão substitui terapia?",
-    a: "Não. A imersão tem caráter educacional e espiritual e não substitui acompanhamento médico ou psicológico.",
-  },
-  {
-    q: "Será um ambiente cristão?",
-    a: "Sim. A imersão será fundamentada em princípios bíblicos, apresentados com verdade, responsabilidade, respeito e amor.",
-  },
-  { q: "Qual é o valor?", a: "O ingresso custa R$ 37,00." },
-  { q: "Quando acontecerá?", a: "Nos dias 04 e 05 de Julho, das 13h às 19h, em formato online e ao vivo." },
+  { q:'A imersão é somente para pais?', a:'Não. Ela foi preparada para pais e mães, mas também para filhos que vivem conflitos relacionados à homossexualidade, identidade, fé e relacionamento familiar.' },
+  { q:'Mulheres homossexuais podem participar?', a:'Sim, esse conteúdo foi desenvolvido para homens e para mulheres.' },
+  { q:'Preciso participar com meus pais ou com meu filho?', a:'Não. Cada pessoa pode participar individualmente. Caso pais e filho desejem participar juntos, também será possível.' },
+  { q:'A imersão promete mudar a orientação sexual?', a:'Não. A imersão não apresenta promessa de mudança de orientação sexual. O trabalho está concentrado em identidade, história pessoal, responsabilidade, espiritualidade, comunicação e restauração familiar.' },
+  { q:'A imersão substitui terapia?', a:'Não. A imersão tem caráter educacional e espiritual e não substitui acompanhamento médico ou psicológico.' },
+  { q:'Será um ambiente cristão?', a:'Sim. A imersão será fundamentada em princípios bíblicos, apresentados com verdade, responsabilidade, respeito e amor.' },
+  { q:'Qual é o valor?', a:'O ingresso custa R$ 37,00.' },
+  { q:'Quando acontecerá?', a:'Nos dias 04 e 05 de Julho, das 13h às 19h, em formato online e ao vivo.' },
 ];
