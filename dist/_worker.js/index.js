@@ -192,47 +192,47 @@ function getRouteRules(method, pathname) {
 //#endregion
 //#region #nitro/virtual/public-assets-data
 var public_assets_data_default = {
-	"/assets/obrigado-cpZuw31v.js": {
+	"/assets/obrigado-BgFbJqmY.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"f23-JToQ2g72+10WnQrwvEFJJdxsE9I\"",
-		"mtime": "2026-07-04T23:33:20.871Z",
+		"etag": "\"f23-KbRfwMbuPczcx7BRy2c8hgrMfg8\"",
+		"mtime": "2026-07-04T23:45:51.050Z",
 		"size": 3875,
-		"path": "../assets/obrigado-cpZuw31v.js"
+		"path": "../assets/obrigado-BgFbJqmY.js"
 	},
 	"/assets/pierry-lp2-BjQjrymJ.jpg": {
 		"type": "image/jpeg",
 		"etag": "\"1991a-EAZdB5LKcn6/qDIqv7Ojw9WNHRE\"",
-		"mtime": "2026-07-04T23:33:20.871Z",
+		"mtime": "2026-07-04T23:45:51.050Z",
 		"size": 104730,
 		"path": "../assets/pierry-lp2-BjQjrymJ.jpg"
+	},
+	"/assets/index-CrREnswa.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"54f62-ER5tUekuvJmpu+foApJ7Q9d+Ycs\"",
+		"mtime": "2026-07-04T23:45:51.050Z",
+		"size": 348002,
+		"path": "../assets/index-CrREnswa.js"
+	},
+	"/assets/routes-D-Lf6c9K.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"29217-0fTDJBgu6l4SxIDYvwslromaZlM\"",
+		"mtime": "2026-07-04T23:45:51.050Z",
+		"size": 168471,
+		"path": "../assets/routes-D-Lf6c9K.js"
 	},
 	"/assets/speaker-opt-BuJb6J0V.jpg": {
 		"type": "image/jpeg",
 		"etag": "\"1520a-SMwDrEGiu08wjIyC20gs8zRG37Y\"",
-		"mtime": "2026-07-04T23:33:20.871Z",
+		"mtime": "2026-07-04T23:45:51.050Z",
 		"size": 86538,
 		"path": "../assets/speaker-opt-BuJb6J0V.jpg"
-	},
-	"/assets/index-D1dEoa56.js": {
-		"type": "text/javascript; charset=utf-8",
-		"etag": "\"54f62-5OAOaEhNk9dmUFhDFsGrX2yIcoE\"",
-		"mtime": "2026-07-04T23:33:20.871Z",
-		"size": 348002,
-		"path": "../assets/index-D1dEoa56.js"
 	},
 	"/assets/styles-CZfzMKqg.css": {
 		"type": "text/css; charset=utf-8",
 		"etag": "\"162be-BGWtJr+UZ1SD/EN4HNaPYl4fjBs\"",
-		"mtime": "2026-07-04T23:33:20.871Z",
+		"mtime": "2026-07-04T23:45:51.051Z",
 		"size": 90814,
 		"path": "../assets/styles-CZfzMKqg.css"
-	},
-	"/assets/routes-BpulbcZO.js": {
-		"type": "text/javascript; charset=utf-8",
-		"etag": "\"29254-syVddwLKJ73P29IIJGumbgQVJTU\"",
-		"mtime": "2026-07-04T23:33:20.871Z",
-		"size": 168532,
-		"path": "../assets/routes-BpulbcZO.js"
 	}
 };
 //#endregion
