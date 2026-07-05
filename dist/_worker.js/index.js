@@ -192,47 +192,47 @@ function getRouteRules(method, pathname) {
 //#endregion
 //#region #nitro/virtual/public-assets-data
 var public_assets_data_default = {
-	"/assets/obrigado-jNL4Vh1s.js": {
-		"type": "text/javascript; charset=utf-8",
-		"etag": "\"f22-r8PL5Faz20CMD8AmgK0A1LgLyvc\"",
-		"mtime": "2026-07-05T11:42:40.539Z",
-		"size": 3874,
-		"path": "../assets/obrigado-jNL4Vh1s.js"
-	},
 	"/assets/pierry-lp2-BjQjrymJ.jpg": {
 		"type": "image/jpeg",
 		"etag": "\"1991a-EAZdB5LKcn6/qDIqv7Ojw9WNHRE\"",
-		"mtime": "2026-07-05T11:42:40.539Z",
+		"mtime": "2026-07-05T11:49:39.152Z",
 		"size": 104730,
 		"path": "../assets/pierry-lp2-BjQjrymJ.jpg"
 	},
-	"/assets/index-g9spN0K1.js": {
+	"/assets/obrigado-CBYLeSlN.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"54f62-q1fs+WnEx8Zv5fNES4j57wc4YKo\"",
-		"mtime": "2026-07-05T11:42:40.535Z",
-		"size": 348002,
-		"path": "../assets/index-g9spN0K1.js"
+		"etag": "\"f22-lUHYOYaKo6tcWlk5+hcCRzbL7AY\"",
+		"mtime": "2026-07-05T11:49:39.151Z",
+		"size": 3874,
+		"path": "../assets/obrigado-CBYLeSlN.js"
 	},
-	"/assets/routes-D_i6lSZ6.js": {
+	"/assets/index-B2USq6Dc.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"290aa-HCtRHuWX8BP7bAcFKuuJPTJr7lY\"",
-		"mtime": "2026-07-05T11:42:40.539Z",
-		"size": 168106,
-		"path": "../assets/routes-D_i6lSZ6.js"
+		"etag": "\"54f62-59QmLNnlSDHEBzgt+pRmhTs5/Ow\"",
+		"mtime": "2026-07-05T11:49:39.151Z",
+		"size": 348002,
+		"path": "../assets/index-B2USq6Dc.js"
 	},
 	"/assets/speaker-opt-BuJb6J0V.jpg": {
 		"type": "image/jpeg",
 		"etag": "\"1520a-SMwDrEGiu08wjIyC20gs8zRG37Y\"",
-		"mtime": "2026-07-05T11:42:40.539Z",
+		"mtime": "2026-07-05T11:49:39.152Z",
 		"size": 86538,
 		"path": "../assets/speaker-opt-BuJb6J0V.jpg"
 	},
-	"/assets/styles-CH810enj.css": {
+	"/assets/routes--cCepBWS.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"29067-OMFGqVz9i7Zy90bZoNhze5Ko/WI\"",
+		"mtime": "2026-07-05T11:49:39.151Z",
+		"size": 168039,
+		"path": "../assets/routes--cCepBWS.js"
+	},
+	"/assets/styles-CdTHjglb.css": {
 		"type": "text/css; charset=utf-8",
-		"etag": "\"16148-7H1Ok/i/cvfVt6E2H5K46oym5Hk\"",
-		"mtime": "2026-07-05T11:42:40.539Z",
-		"size": 90440,
-		"path": "../assets/styles-CH810enj.css"
+		"etag": "\"16117-hBLf+7r4i74TwDBw7KOEO3Gyi70\"",
+		"mtime": "2026-07-05T11:49:39.152Z",
+		"size": 90391,
+		"path": "../assets/styles-CdTHjglb.css"
 	}
 };
 //#endregion
