@@ -192,45 +192,45 @@ function getRouteRules(method, pathname) {
 //#endregion
 //#region #nitro/virtual/public-assets-data
 var public_assets_data_default = {
-	"/assets/obrigado-BlM134c9.js": {
+	"/assets/obrigado-WPp0z5eq.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"f23-yZwl4LOUvcxgZFfVLAtVwbCCBOo\"",
-		"mtime": "2026-07-05T11:30:57.359Z",
-		"size": 3875,
-		"path": "../assets/obrigado-BlM134c9.js"
+		"etag": "\"f22-WP0v9VEtOTLJPQYBmZfsj39ceFc\"",
+		"mtime": "2026-07-05T11:38:21.428Z",
+		"size": 3874,
+		"path": "../assets/obrigado-WPp0z5eq.js"
 	},
 	"/assets/pierry-lp2-BjQjrymJ.jpg": {
 		"type": "image/jpeg",
 		"etag": "\"1991a-EAZdB5LKcn6/qDIqv7Ojw9WNHRE\"",
-		"mtime": "2026-07-05T11:30:57.359Z",
+		"mtime": "2026-07-05T11:38:21.429Z",
 		"size": 104730,
 		"path": "../assets/pierry-lp2-BjQjrymJ.jpg"
+	},
+	"/assets/routes-jynR8gUQ.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"290ab-auQvHdjBWhYpIA6FLn5gGGQfyT8\"",
+		"mtime": "2026-07-05T11:38:21.428Z",
+		"size": 168107,
+		"path": "../assets/routes-jynR8gUQ.js"
 	},
 	"/assets/speaker-opt-BuJb6J0V.jpg": {
 		"type": "image/jpeg",
 		"etag": "\"1520a-SMwDrEGiu08wjIyC20gs8zRG37Y\"",
-		"mtime": "2026-07-05T11:30:57.360Z",
+		"mtime": "2026-07-05T11:38:21.429Z",
 		"size": 86538,
 		"path": "../assets/speaker-opt-BuJb6J0V.jpg"
 	},
-	"/assets/routes-CzQQog9C.js": {
+	"/assets/index-DLg_W-XO.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"290ab-e50x40fAQY7cRx/Jn758Cp8c1YM\"",
-		"mtime": "2026-07-05T11:30:57.359Z",
-		"size": 168107,
-		"path": "../assets/routes-CzQQog9C.js"
-	},
-	"/assets/index-CaeUY1x0.js": {
-		"type": "text/javascript; charset=utf-8",
-		"etag": "\"54f62-ZAFTrbT7X8y+DzWSGyL8pOy5Qo0\"",
-		"mtime": "2026-07-05T11:30:57.359Z",
+		"etag": "\"54f62-J1WLWD/vsW2Ty3f+0D/rUzKJmKo\"",
+		"mtime": "2026-07-05T11:38:21.428Z",
 		"size": 348002,
-		"path": "../assets/index-CaeUY1x0.js"
+		"path": "../assets/index-DLg_W-XO.js"
 	},
 	"/assets/styles-CH810enj.css": {
 		"type": "text/css; charset=utf-8",
 		"etag": "\"16148-7H1Ok/i/cvfVt6E2H5K46oym5Hk\"",
-		"mtime": "2026-07-05T11:30:57.360Z",
+		"mtime": "2026-07-05T11:38:21.429Z",
 		"size": 90440,
 		"path": "../assets/styles-CH810enj.css"
 	}
