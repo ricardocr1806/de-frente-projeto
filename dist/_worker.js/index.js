@@ -192,47 +192,47 @@ function getRouteRules(method, pathname) {
 //#endregion
 //#region #nitro/virtual/public-assets-data
 var public_assets_data_default = {
-	"/assets/obrigado-DyBwKPPW.js": {
+	"/assets/obrigado-nPX3je5A.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"f23-icC9IdslVmLLfzWWUjCtAFWClzc\"",
-		"mtime": "2026-07-05T00:24:00.457Z",
+		"etag": "\"f23-2Um+mal77OwoqMjdZ1VqH+vnZ40\"",
+		"mtime": "2026-07-05T00:33:47.872Z",
 		"size": 3875,
-		"path": "../assets/obrigado-DyBwKPPW.js"
+		"path": "../assets/obrigado-nPX3je5A.js"
 	},
-	"/assets/routes-D622_l2v.js": {
+	"/assets/routes-CTzeN5DI.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"2914b-ELGCbOwbS968V/6sTPdGg94y1T0\"",
-		"mtime": "2026-07-05T00:24:00.457Z",
-		"size": 168267,
-		"path": "../assets/routes-D622_l2v.js"
+		"etag": "\"291af-K5li8DoP9zvp+yTgvces42CVJdk\"",
+		"mtime": "2026-07-05T00:33:47.872Z",
+		"size": 168367,
+		"path": "../assets/routes-CTzeN5DI.js"
 	},
-	"/assets/index-BbIhYkHE.js": {
+	"/assets/index-DheUIGMR.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"54f62-shUrGL0BWztwawtu44EWUtD0mzo\"",
-		"mtime": "2026-07-05T00:24:00.457Z",
+		"etag": "\"54f62-tSYrMpxNzuDnzUP8u8AndclS70o\"",
+		"mtime": "2026-07-05T00:33:47.872Z",
 		"size": 348002,
-		"path": "../assets/index-BbIhYkHE.js"
-	},
-	"/assets/speaker-opt-BuJb6J0V.jpg": {
-		"type": "image/jpeg",
-		"etag": "\"1520a-SMwDrEGiu08wjIyC20gs8zRG37Y\"",
-		"mtime": "2026-07-05T00:24:00.458Z",
-		"size": 86538,
-		"path": "../assets/speaker-opt-BuJb6J0V.jpg"
+		"path": "../assets/index-DheUIGMR.js"
 	},
 	"/assets/pierry-lp2-BjQjrymJ.jpg": {
 		"type": "image/jpeg",
 		"etag": "\"1991a-EAZdB5LKcn6/qDIqv7Ojw9WNHRE\"",
-		"mtime": "2026-07-05T00:24:00.457Z",
+		"mtime": "2026-07-05T00:33:47.873Z",
 		"size": 104730,
 		"path": "../assets/pierry-lp2-BjQjrymJ.jpg"
 	},
-	"/assets/styles-BA8xM7gK.css": {
+	"/assets/styles-D53Wgp3Q.css": {
 		"type": "text/css; charset=utf-8",
-		"etag": "\"1607b-DDr154RJvd0G+yqcxFa003rWw88\"",
-		"mtime": "2026-07-05T00:24:00.458Z",
-		"size": 90235,
-		"path": "../assets/styles-BA8xM7gK.css"
+		"etag": "\"160ca-5uSrjm3tv7rqTBSmbUYqLrEEEBE\"",
+		"mtime": "2026-07-05T00:33:47.873Z",
+		"size": 90314,
+		"path": "../assets/styles-D53Wgp3Q.css"
+	},
+	"/assets/speaker-opt-BuJb6J0V.jpg": {
+		"type": "image/jpeg",
+		"etag": "\"1520a-SMwDrEGiu08wjIyC20gs8zRG37Y\"",
+		"mtime": "2026-07-05T00:33:47.873Z",
+		"size": 86538,
+		"path": "../assets/speaker-opt-BuJb6J0V.jpg"
 	}
 };
 //#endregion
