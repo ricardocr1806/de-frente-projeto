@@ -192,47 +192,47 @@ function getRouteRules(method, pathname) {
 //#endregion
 //#region #nitro/virtual/public-assets-data
 var public_assets_data_default = {
-	"/assets/obrigado-CFqmCZpq.js": {
-		"type": "text/javascript; charset=utf-8",
-		"etag": "\"f23-Q/prRT94a0Ekx2cD9nSfxYNiYFE\"",
-		"mtime": "2026-07-05T00:42:31.245Z",
-		"size": 3875,
-		"path": "../assets/obrigado-CFqmCZpq.js"
-	},
 	"/assets/pierry-lp2-BjQjrymJ.jpg": {
 		"type": "image/jpeg",
 		"etag": "\"1991a-EAZdB5LKcn6/qDIqv7Ojw9WNHRE\"",
-		"mtime": "2026-07-05T00:42:31.245Z",
+		"mtime": "2026-07-05T11:21:57.018Z",
 		"size": 104730,
 		"path": "../assets/pierry-lp2-BjQjrymJ.jpg"
+	},
+	"/assets/index-BW0hu2ny.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"54f62-0yE3pzYJ3AZlkm7J/Trea3BiE0M\"",
+		"mtime": "2026-07-05T11:21:57.015Z",
+		"size": 348002,
+		"path": "../assets/index-BW0hu2ny.js"
 	},
 	"/assets/speaker-opt-BuJb6J0V.jpg": {
 		"type": "image/jpeg",
 		"etag": "\"1520a-SMwDrEGiu08wjIyC20gs8zRG37Y\"",
-		"mtime": "2026-07-05T00:42:31.246Z",
+		"mtime": "2026-07-05T11:21:57.018Z",
 		"size": 86538,
 		"path": "../assets/speaker-opt-BuJb6J0V.jpg"
 	},
-	"/assets/index-CJhJGIs7.js": {
+	"/assets/routes-C7nSQ8nj.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"54f62-Cp0hQuw+6B6n/b/W/7dDYS2RwC0\"",
-		"mtime": "2026-07-05T00:42:31.245Z",
-		"size": 348002,
-		"path": "../assets/index-CJhJGIs7.js"
+		"etag": "\"29079-j3Xs8OUIWjSK1KEovm5qmDov45A\"",
+		"mtime": "2026-07-05T11:21:57.018Z",
+		"size": 168057,
+		"path": "../assets/routes-C7nSQ8nj.js"
 	},
-	"/assets/styles-D-n8LXJo.css": {
+	"/assets/styles-bPuMuVHv.css": {
 		"type": "text/css; charset=utf-8",
-		"etag": "\"16131-Ax8bNkJBlnoSl923kLlYcPQfbYk\"",
-		"mtime": "2026-07-05T00:42:31.246Z",
-		"size": 90417,
-		"path": "../assets/styles-D-n8LXJo.css"
+		"etag": "\"1611d-mZLTtuDrGmQzI+Rel7TaDGL2do4\"",
+		"mtime": "2026-07-05T11:21:57.018Z",
+		"size": 90397,
+		"path": "../assets/styles-bPuMuVHv.css"
 	},
-	"/assets/routes-BIMFe6Zs.js": {
+	"/assets/obrigado-DPjlWqcN.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"29051-deAvqALwT+V1fEu42WbYkOX35WU\"",
-		"mtime": "2026-07-05T00:42:31.245Z",
-		"size": 168017,
-		"path": "../assets/routes-BIMFe6Zs.js"
+		"etag": "\"f23-IO4CKTsW/TI7UXsdM9eupiwxF28\"",
+		"mtime": "2026-07-05T11:21:57.016Z",
+		"size": 3875,
+		"path": "../assets/obrigado-DPjlWqcN.js"
 	}
 };
 //#endregion
