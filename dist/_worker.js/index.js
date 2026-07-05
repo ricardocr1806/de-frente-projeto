@@ -192,47 +192,47 @@ function getRouteRules(method, pathname) {
 //#endregion
 //#region #nitro/virtual/public-assets-data
 var public_assets_data_default = {
-	"/assets/obrigado-nPX3je5A.js": {
+	"/assets/obrigado-CFqmCZpq.js": {
 		"type": "text/javascript; charset=utf-8",
-		"etag": "\"f23-2Um+mal77OwoqMjdZ1VqH+vnZ40\"",
-		"mtime": "2026-07-05T00:33:47.872Z",
+		"etag": "\"f23-Q/prRT94a0Ekx2cD9nSfxYNiYFE\"",
+		"mtime": "2026-07-05T00:42:31.245Z",
 		"size": 3875,
-		"path": "../assets/obrigado-nPX3je5A.js"
-	},
-	"/assets/routes-CTzeN5DI.js": {
-		"type": "text/javascript; charset=utf-8",
-		"etag": "\"291af-K5li8DoP9zvp+yTgvces42CVJdk\"",
-		"mtime": "2026-07-05T00:33:47.872Z",
-		"size": 168367,
-		"path": "../assets/routes-CTzeN5DI.js"
-	},
-	"/assets/index-DheUIGMR.js": {
-		"type": "text/javascript; charset=utf-8",
-		"etag": "\"54f62-tSYrMpxNzuDnzUP8u8AndclS70o\"",
-		"mtime": "2026-07-05T00:33:47.872Z",
-		"size": 348002,
-		"path": "../assets/index-DheUIGMR.js"
+		"path": "../assets/obrigado-CFqmCZpq.js"
 	},
 	"/assets/pierry-lp2-BjQjrymJ.jpg": {
 		"type": "image/jpeg",
 		"etag": "\"1991a-EAZdB5LKcn6/qDIqv7Ojw9WNHRE\"",
-		"mtime": "2026-07-05T00:33:47.873Z",
+		"mtime": "2026-07-05T00:42:31.245Z",
 		"size": 104730,
 		"path": "../assets/pierry-lp2-BjQjrymJ.jpg"
-	},
-	"/assets/styles-D53Wgp3Q.css": {
-		"type": "text/css; charset=utf-8",
-		"etag": "\"160ca-5uSrjm3tv7rqTBSmbUYqLrEEEBE\"",
-		"mtime": "2026-07-05T00:33:47.873Z",
-		"size": 90314,
-		"path": "../assets/styles-D53Wgp3Q.css"
 	},
 	"/assets/speaker-opt-BuJb6J0V.jpg": {
 		"type": "image/jpeg",
 		"etag": "\"1520a-SMwDrEGiu08wjIyC20gs8zRG37Y\"",
-		"mtime": "2026-07-05T00:33:47.873Z",
+		"mtime": "2026-07-05T00:42:31.246Z",
 		"size": 86538,
 		"path": "../assets/speaker-opt-BuJb6J0V.jpg"
+	},
+	"/assets/index-CJhJGIs7.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"54f62-Cp0hQuw+6B6n/b/W/7dDYS2RwC0\"",
+		"mtime": "2026-07-05T00:42:31.245Z",
+		"size": 348002,
+		"path": "../assets/index-CJhJGIs7.js"
+	},
+	"/assets/styles-D-n8LXJo.css": {
+		"type": "text/css; charset=utf-8",
+		"etag": "\"16131-Ax8bNkJBlnoSl923kLlYcPQfbYk\"",
+		"mtime": "2026-07-05T00:42:31.246Z",
+		"size": 90417,
+		"path": "../assets/styles-D-n8LXJo.css"
+	},
+	"/assets/routes-BIMFe6Zs.js": {
+		"type": "text/javascript; charset=utf-8",
+		"etag": "\"29051-deAvqALwT+V1fEu42WbYkOX35WU\"",
+		"mtime": "2026-07-05T00:42:31.245Z",
+		"size": 168017,
+		"path": "../assets/routes-BIMFe6Zs.js"
 	}
 };
 //#endregion
