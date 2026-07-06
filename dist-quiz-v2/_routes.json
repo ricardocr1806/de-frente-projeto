@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "include": [
+    "/*"
+  ],
+  "exclude": [
+    "/assets/dashboard-CpGoGunc.js",
+    "/assets/family-happy-Dlky4wKY.jpg",
+    "/assets/family-sad-VDPiMMOT.jpg",
+    "/assets/index-CCb3ToYe.js",
+    "/assets/person-happy-B0BUHc59.jpg",
+    "/assets/person-sad-VdOVHVFO.jpg",
+    "/assets/pierry-D_MOeR7m.jpg",
+    "/assets/routes-Bbg9snl1.js",
+    "/assets/styles-DhG9_l6B.css"
+  ]
+}
