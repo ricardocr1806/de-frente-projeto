@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "include": [
+    "/*"
+  ],
+  "exclude": [
+    "/assets/antes-depois-bg4kA1h_.png",
+    "/assets/hero-mobile-BbMJxyvr.png",
+    "/assets/index-Buq2iMQ1.js",
+    "/assets/obrigado-UgUEA7bO.js",
+    "/assets/pierry-rodrigues-D_MOeR7m.jpg",
+    "/assets/privacidade-zmNY1-LX.js",
+    "/assets/routes-qNwFymn2.js",
+    "/assets/styles-DCpEqP8x.css"
+  ]
+}
