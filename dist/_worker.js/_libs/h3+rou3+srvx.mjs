@@ -1,4 +1,4 @@
-//#region node_modules/rou3/dist/index.mjs
+//#region node_modules/h3/node_modules/rou3/dist/index.mjs
 var NullProtoObj = /* @__PURE__ */ (() => {
 	const e = function() {};
 	return e.prototype = Object.create(null), Object.freeze(e.prototype), e;
@@ -16,6 +16,7 @@ var kEventNS = "h3.internal.event.";
 var kEventRes = /* @__PURE__ */ Symbol.for(`${kEventNS}res`);
 var kEventResHeaders = /* @__PURE__ */ Symbol.for(`${kEventNS}res.headers`);
 var kEventResErrHeaders = /* @__PURE__ */ Symbol.for(`${kEventNS}res.err.headers`);
+var kMalformedURL = /* @__PURE__ */ Symbol.for(`${kEventNS}malformed`);
 var H3Event = class {
 	app;
 	req;
@@ -27,8 +28,13 @@ var H3Event = class {
 		this.req = req;
 		this.app = app;
 		const _url = req._url;
-		const url = _url && _url instanceof URL ? _url : new FastURL(req.url);
-		if (url.pathname.includes("%")) url.pathname = decodePathname(url.pathname);
+		let url = _url && _url instanceof URL ? _url : new FastURL(req.url);
+		if (url.pathname.includes("%")) try {
+			const pathname = decodePathname(url.pathname);
+			if (pathname !== url.pathname) url = new FastURL(`${url.protocol}//${url.host}${pathname}${url.search}`);
+		} catch {
+			this[kMalformedURL] = true;
+		}
 		this.url = url;
 	}
 	get res() {
@@ -76,7 +82,7 @@ function sanitizeStatusMessage(statusMessage = "") {
 function sanitizeStatusCode(statusCode, defaultStatusCode = 200) {
 	if (!statusCode) return defaultStatusCode;
 	if (typeof statusCode === "string") statusCode = +statusCode;
-	if (statusCode < 100 || statusCode > 599) return defaultStatusCode;
+	if (Number.isNaN(statusCode) || statusCode < 100 || statusCode > 599) return defaultStatusCode;
 	return statusCode;
 }
 var HTTPError = class HTTPError extends Error {
@@ -313,7 +319,7 @@ function toRequest(input, options) {
 		if (url[0] === "/") {
 			const headers = options?.headers ? new Headers(options.headers) : void 0;
 			const host = headers?.get("host") || "localhost";
-			url = `${headers?.get("x-forwarded-proto") === "https" ? "https" : "http"}://${host}${url}`;
+			url = `${(headers?.get("x-forwarded-proto") || "").split(",")[0].trim() === "https" ? "https" : "http"}://${host}${url}`;
 		}
 		return new Request(url, options);
 	} else if (options || input instanceof URL) return new Request(input, options);
@@ -388,6 +394,10 @@ var H3Core = class {
 		const event = new H3Event(request, context, this);
 		let handlerRes;
 		try {
+			if (event[kMalformedURL] && !this.config.allowMalformedURL) throw new HTTPError({
+				status: 400,
+				message: "Bad Request"
+			});
 			if (this.config.onRequest) {
 				const hookRes = this.config.onRequest(event);
 				handlerRes = typeof hookRes?.then === "function" ? hookRes.then(() => this.handler(event)) : this.handler(event);
@@ -407,5 +417,6 @@ var H3Core = class {
 		return routeMiddleware ? [...globalMiddleware, ...routeMiddleware] : globalMiddleware;
 	}
 };
+new RegExp(/%(?:25)*(?:2f|5c)/i.source, "gi");
 //#endregion
-export { FastResponse as a, toRequest as i, HTTPError as n, FastURL as o, defineLazyEventHandler as r, NullProtoObj as s, H3Core as t };
+export { FastResponse as a, toRequest as i, HTTPError as n, FastURL as o, defineLazyEventHandler as r, H3Core as t };
