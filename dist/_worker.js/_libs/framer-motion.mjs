@@ -1243,8 +1243,7 @@ function spring(optionsOrVisualDuration = springDefaults.visualDuration, bounce 
 		angularFreq = calcAngularFreq(undampedAngularFreq, dampingRatio);
 		A = (initialVelocity + dampingRatio * undampedAngularFreq * initialDelta) / angularFreq;
 		resolveSpring = (t) => {
-			const envelope = Math.exp(-dampingRatio * undampedAngularFreq * t);
-			return target - envelope * (A * Math.sin(angularFreq * t) + initialDelta * Math.cos(angularFreq * t));
+			return target - Math.exp(-dampingRatio * undampedAngularFreq * t) * (A * Math.sin(angularFreq * t) + initialDelta * Math.cos(angularFreq * t));
 		};
 		sinCoeff = dampingRatio * undampedAngularFreq * A + initialDelta * angularFreq;
 		cosCoeff = dampingRatio * undampedAngularFreq * initialDelta - A * angularFreq;
