@@ -1073,7 +1073,7 @@ function Hero({ openModal }) {
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 							className: "text-muted-foreground text-base leading-relaxed mb-6",
-							children: "Uma imersão de 2 dias para reconstruir a comunicação e se aproximar sem perder o filho."
+							children: "Uma imersão de 4 dias para reconstruir a comunicação e se aproximar sem perder o filho."
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "flex gap-4 text-sm text-navy/70 mb-6 font-medium",
@@ -1136,7 +1136,7 @@ function Hero({ openModal }) {
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 							className: "mt-8 text-xl text-muted-foreground max-w-xl leading-relaxed",
 							style: { animation: "fadeUp 0.9s 0.5s both" },
-							children: "Uma imersão de 2 dias para pais que querem entender o que está acontecendo, reconstruir a comunicação e se aproximar sem perder o filho."
+							children: "Uma imersão de 4 dias para pais que querem entender o que está acontecendo, reconstruir a comunicação e se aproximar sem perder o filho."
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 							className: "mt-6 pl-5 border-l-[3px] border-gold/50 max-w-xl",
@@ -1422,7 +1422,7 @@ function Modules() {
 					" ",
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 						className: "text-gold",
-						children: "dois dias"
+						children: "quatro dias"
 					}),
 					"."
 				]
@@ -1648,7 +1648,7 @@ function FinalCTA({ openModal }) {
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
 						className: "font-display text-3xl sm:text-4xl lg:text-5xl leading-tight text-balance text-navy",
 						children: [
-							"Dois dias para iniciar uma",
+							"Quatro dias para iniciar uma",
 							" ",
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 								className: "italic text-gold",
