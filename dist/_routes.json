@@ -4,10 +4,8 @@
     "/*"
   ],
   "exclude": [
-    "/assets/index-CzYXgidB.js",
-    "/assets/obrigado-B3bWh8j3.js",
-    "/assets/pierry-new-WI_UCmAX.jpg",
-    "/assets/routes-8yFQfWfV.js",
-    "/assets/styles-C7MN11ip.css"
+    "/assets/*",
+    "/favicon.ico",
+    "/robots.txt"
   ]
 }
