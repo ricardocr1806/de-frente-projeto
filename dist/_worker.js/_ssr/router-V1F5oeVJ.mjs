@@ -222,7 +222,7 @@ var Route = createFileRoute("/")({
 		{ title: "De Frente com a Homossexualidade — Imersão para Pais" },
 		{
 			name: "description",
-			content: "Quatro dias para pais que desejam compreender, reconstruir a comunicação e restaurar a conexão com seus filhos. Imersão online e ao vivo."
+			content: "Dois dias para pais que desejam compreender, reconstruir a comunicação e restaurar a conexão com seus filhos. Imersão online e ao vivo."
 		},
 		{
 			property: "og:title",

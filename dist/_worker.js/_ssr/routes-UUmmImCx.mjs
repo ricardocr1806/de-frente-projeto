@@ -1403,7 +1403,7 @@ function Modules() {
 					" ",
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 						className: "text-gold",
-						children: "quatro dias"
+						children: "dois dias"
 					}),
 					"."
 				]
@@ -1632,7 +1632,7 @@ function FinalCTA({ openModal }) {
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
 						className: "font-display text-3xl sm:text-4xl lg:text-5xl leading-tight text-balance text-navy",
 						children: [
-							"Quatro dias para iniciar uma",
+							"Dois dias para iniciar uma",
 							" ",
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 								className: "italic text-gold",
