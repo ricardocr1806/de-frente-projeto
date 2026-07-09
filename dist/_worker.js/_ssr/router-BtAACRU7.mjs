@@ -208,7 +208,8 @@ function RootComponent() {
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Outlet, {})
 	});
 }
-var $$splitComponentImporter$2 = () => import("./v27-C_vHBmBM.mjs");
+var $splitComponentImporter$2 = () => import("./v27-C_vHBmBM.mjs");
+var $splitComponentImporterV47 = () => import("./v47-C_vHBmBM.mjs");
 var Route$2 = createFileRoute("/v27")({
 	head: () => ({ meta: [
 		{ title: "De Frente com a Homossexualidade — Imersão para Pais" },
@@ -312,12 +313,12 @@ var V27Route = Route$2.update({
 	id: "/v27",
 	path: "/v27",
 	getParentRoute: () => Route$3
-});
+})
 var V47Route = RouteV47.update({
 	id: "/v47",
 	path: "/v47",
 	getParentRoute: () => Route$3
-});
+});;
 var ObrigadoRoute = Route$1.update({
 	id: "/obrigado",
 	path: "/obrigado",
