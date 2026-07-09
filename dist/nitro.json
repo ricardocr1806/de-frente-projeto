@@ -1,5 +1,5 @@
 {
-  "date": "2026-07-08T21:53:34.505Z",
+  "date": "2026-07-09T13:31:41.033Z",
   "preset": "cloudflare-pages",
   "framework": {
     "name": "nitro",
@@ -19,6 +19,5 @@
       "deployConfig": true,
       "nodeCompat": true
     }
-  },
-  "_deployedAt": "2026-07-09T13:16:27.928Z"
+  }
 }
