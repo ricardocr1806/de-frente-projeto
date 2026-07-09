@@ -1695,7 +1695,7 @@ function FinalCTA({ openModal }) {
 							children: "Ingresso"
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "font-display text-6xl lg:text-7xl text-navy font-bold",
-							children: ["R$ 9", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							children: ["R$ 19", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 								className: "text-3xl text-gold",
 								children: ",90"
 							})]
