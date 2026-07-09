@@ -239,6 +239,36 @@ var Route$2 = createFileRoute("/v27")({
 	] }),
 	component: lazyRouteComponent($$splitComponentImporter$2, "component")
 });
+var RouteV47 = createFileRoute("/v47")({
+	head: () => ({ meta: [
+		{ title: "De Frente com a Homossexualidade — Imersão para Pais" },
+		{
+			name: "description",
+			content: "Dois dias para pais que desejam compreender, reconstruir a comunicação e restaurar a conexão com seus filhos. Imersão online e ao vivo."
+		},
+		{
+			property: "og:title",
+			content: "De Frente com a Homossexualidade — Imersão para Pais"
+		},
+		{
+			property: "og:description",
+			content: "Um caminho entre a rejeição e a permissividade. Verdade, presença, responsabilidade e amor."
+		},
+		{
+			property: "og:image",
+			content: pierry_new_default
+		},
+		{
+			property: "og:type",
+			content: "website"
+		},
+		{
+			name: "twitter:card",
+			content: "summary_large_image"
+		}
+	] }),
+	component: lazyRouteComponent($splitComponentImporterV47, "component")
+});
 var $$splitComponentImporter$1 = () => import("./obrigado-B3df705L.mjs");
 var Route$1 = createFileRoute("/obrigado")({
 	head: () => ({ meta: [{ title: "Parabéns! — De Frente com a Homossexualidade" }, {
@@ -283,6 +313,11 @@ var V27Route = Route$2.update({
 	path: "/v27",
 	getParentRoute: () => Route$3
 });
+var V47Route = RouteV47.update({
+	id: "/v47",
+	path: "/v47",
+	getParentRoute: () => Route$3
+});
 var ObrigadoRoute = Route$1.update({
 	id: "/obrigado",
 	path: "/obrigado",
@@ -295,7 +330,8 @@ var rootRouteChildren = {
 		getParentRoute: () => Route$3
 	}),
 	ObrigadoRoute,
-	V27Route
+	V27Route,
+	V47Route
 };
 var routeTree = Route$3._addFileChildren(rootRouteChildren)._addFileTypes();
 var getRouter = () => {
