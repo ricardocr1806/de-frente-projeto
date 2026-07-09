@@ -1,7 +1,7 @@
 {
-  "compatibility_date": "2026-07-05",
+  "compatibility_date": "2026-07-06",
   "pages_build_output_dir": "..",
-  "name": "tanstack-start-ts-claude-501--users-ricardocastro-81be39e2-9ff1-4e49-88e0-5119d16e274c-scratchpad-lp2-dark",
+  "name": "tanstack-start-ts",
   "compatibility_flags": [
     "nodejs_compat"
   ]
