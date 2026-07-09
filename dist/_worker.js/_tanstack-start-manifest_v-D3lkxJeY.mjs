@@ -5,7 +5,8 @@ var tsrStartManifest = () => ({ routes: {
 		children: [
 			"/",
 			"/obrigado",
-			"/v27"
+			"/v27",
+			"/v47"
 		],
 		preloads: ["/assets/index-BZVnABAU.js"],
 		scripts: [{ attrs: {
@@ -28,6 +29,11 @@ var tsrStartManifest = () => ({ routes: {
 		filePath: "/private/tmp/claude-501/-Users-ricardocastro/81be39e2-9ff1-4e49-88e0-5119d16e274c/scratchpad/lp2-dark/src/routes/v27.tsx",
 		children: void 0,
 		preloads: ["/assets/v27-BtD3DYG_.js", "/assets/LeadModal-CbHlm2O4.js"]
+	},
+	"/v47": {
+		filePath: "/private/tmp/claude-501/-Users-ricardocastro/81be39e2-9ff1-4e49-88e0-5119d16e274c/scratchpad/lp2-dark/src/routes/v47.tsx",
+		children: void 0,
+		preloads: ["/assets/v47-BtD3DYG_.js", "/assets/LeadModal-CbHlm2O4.js"]
 	}
 } });
 //#endregion
