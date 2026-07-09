@@ -247,9 +247,82 @@ var Route = createFileRoute("/")({
 	] }),
 	component: lazyRouteComponent($$splitComponentImporter, "component")
 });
+
+var $splitComponentImporterV27 = () => import("./v27-C_vHBmBM.mjs");
+var RouteV27 = createFileRoute("/v27")({
+	head: () => ({ meta: [
+	{ title: "De Frente com a Homossexualidade — Imersão para Pais" },
+	{
+		name: "description",
+		content: "Dois dias para pais que desejam compreender, reconstruir a comunicação e restaurar a conexão com seus filhos. Imersão online e ao vivo."
+	},
+	{
+		property: "og:title",
+		content: "De Frente com a Homossexualidade — Imersão para Pais"
+	},
+	{
+		property: "og:description",
+		content: "Um caminho entre a rejeição e a permissividade. Verdade, presença, responsabilidade e amor."
+	},
+	{
+		property: "og:image",
+		content: pierry_new_default
+	},
+	{
+		property: "og:type",
+		content: "website"
+	},
+	{
+		name: "twitter:card",
+		content: "summary_large_image"
+	}
+] }),
+	component: lazyRouteComponent($splitComponentImporterV27, "component")
+});
+var $splitComponentImporterV47 = () => import("./v47-C_vHBmBM.mjs");
+var RouteV47 = createFileRoute("/v47")({
+	head: () => ({ meta: [
+	{ title: "De Frente com a Homossexualidade — Imersão para Pais" },
+	{
+		name: "description",
+		content: "Dois dias para pais que desejam compreender, reconstruir a comunicação e restaurar a conexão com seus filhos. Imersão online e ao vivo."
+	},
+	{
+		property: "og:title",
+		content: "De Frente com a Homossexualidade — Imersão para Pais"
+	},
+	{
+		property: "og:description",
+		content: "Um caminho entre a rejeição e a permissividade. Verdade, presença, responsabilidade e amor."
+	},
+	{
+		property: "og:image",
+		content: pierry_new_default
+	},
+	{
+		property: "og:type",
+		content: "website"
+	},
+	{
+		name: "twitter:card",
+		content: "summary_large_image"
+	}
+] }),
+	component: lazyRouteComponent($splitComponentImporterV47, "component")
+});
 var ObrigadoRoute = Route$1.update({
 	id: "/obrigado",
 	path: "/obrigado",
+	getParentRoute: () => Route$2
+});
+var V27Route = RouteV27.update({
+	id: "/v27",
+	path: "/v27",
+	getParentRoute: () => Route$2
+});
+var V47Route = RouteV47.update({
+	id: "/v47",
+	path: "/v47",
 	getParentRoute: () => Route$2
 });
 var rootRouteChildren = {
@@ -258,7 +331,9 @@ var rootRouteChildren = {
 		path: "/",
 		getParentRoute: () => Route$2
 	}),
-	ObrigadoRoute
+	ObrigadoRoute,
+	V27Route,
+	V47Route
 };
 var routeTree = Route$2._addFileChildren(rootRouteChildren)._addFileTypes();
 var getRouter = () => {
