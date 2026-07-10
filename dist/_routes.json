@@ -4,17 +4,8 @@
     "/*"
   ],
   "exclude": [
-    "/assets/index-UFfZOqDz.js",
-    "/assets/LeadModal-zFOE7STo.js",
-    "/assets/new-C-GJXnVX.js",
-    "/assets/obrigado-myGJxV3C.js",
-    "/assets/pierry-lp2-BjQjrymJ.jpg",
-    "/assets/pierry-lp2-CGzkszRy.js",
-    "/assets/pierry-new-WI_UCmAX.jpg",
-    "/assets/routes-D0p6NNmY.js",
-    "/assets/speaker-opt-BuJb6J0V.jpg",
-    "/assets/styles-3npEh7yZ.css",
-    "/assets/v27-BppShZRK.js",
-    "/assets/v47-BMQjxPbW.js"
+    "/assets/*",
+    "/favicon.ico",
+    "/robots.txt"
   ]
 }
