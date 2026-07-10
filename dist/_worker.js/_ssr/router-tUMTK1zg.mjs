@@ -3,7 +3,7 @@ import { c as HeadContent, d as Outlet, f as lazyRouteComponent, g as useRouter,
 import { n as require_jsx_runtime, r as require_react, t as QueryClientProvider } from "../_libs/react+tanstack__react-query.mjs";
 import { t as speaker_opt_default } from "./speaker-opt-C3KrRL-K.mjs";
 import { t as QueryClient } from "../_libs/tanstack__query-core.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/router-_gkdPJx8.js
+//#region node_modules/.nitro/vite/services/ssr/assets/router-tUMTK1zg.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var styles_default = "/assets/styles-wTOyIgF3.css";
@@ -208,7 +208,7 @@ function RootComponent() {
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Outlet, {})
 	});
 }
-var $$splitComponentImporter$3 = () => import("./v47-Gr3KA13D.mjs");
+var $$splitComponentImporter$3 = () => import("./v47-DJpLNEU2.mjs");
 var Route$3 = createFileRoute("/v47")({
 	head: () => ({ meta: [
 		{ title: "De Frente com a Homossexualidade — Imersão para Pais" },
@@ -239,7 +239,7 @@ var Route$3 = createFileRoute("/v47")({
 	] }),
 	component: lazyRouteComponent($$splitComponentImporter$3, "component")
 });
-var $$splitComponentImporter$2 = () => import("./v27-BodcYiXd.mjs");
+var $$splitComponentImporter$2 = () => import("./v27-DuPMM1jz.mjs");
 var Route$2 = createFileRoute("/v27")({
 	head: () => ({ meta: [
 		{ title: "De Frente com a Homossexualidade — Imersão para Pais" },

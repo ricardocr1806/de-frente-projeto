@@ -3,7 +3,7 @@ import { n as require_jsx_runtime, r as require_react } from "../_libs/react+tan
 import { t as speaker_opt_default } from "./speaker-opt-C3KrRL-K.mjs";
 import { a as Shield, c as MessageCircle, d as Clock, f as Check, h as ArrowRight, i as Star, l as Heart, m as BookOpen, n as Wifi, o as Plus, p as Calendar, r as Users, s as Minus, u as Compass } from "../_libs/lucide-react.mjs";
 import { a as captureUtms, i as Waves, n as LeadModal, o as pierry_lp2_default, r as SpotlightCard, s as trackLp2, t as BlurText } from "./BlurText-DjPYfMwF.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/v27-BodcYiXd.js
+//#region node_modules/.nitro/vite/services/ssr/assets/v27-DuPMM1jz.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var CTA_PRIMARY = "Quero participar da imersão";
@@ -54,7 +54,7 @@ function LandingPageV27() {
 		fbq("track", "ViewContent", {
 			content_name: "De Frente com a Homossexualidade — Imersão para Pais",
 			content_category: "Imersão Online",
-			value: 27,
+			value: 19.9,
 			currency: "BRL"
 		});
 		const depthsFired = /* @__PURE__ */ new Set();
@@ -86,8 +86,8 @@ function LandingPageV27() {
 		className: "min-h-screen bg-background text-foreground overflow-x-hidden",
 		children: [
 			showModal && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LeadModal, {
-				checkoutUrl: "https://pay.assiny.com.br/sflEGK/node/w-jH0u",
-				checkoutValue: 27,
+				checkoutUrl: "https://pay.assiny.com.br/1d926e/node/3fZr7o",
+				checkoutValue: 19.9,
 				lp: "v27",
 				onClose: () => setShowModal(false)
 			}),
@@ -188,7 +188,7 @@ function Hero({ openModal }) {
 							]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
-							href: "https://pay.assiny.com.br/sflEGK/node/w-jH0u",
+							href: "https://pay.assiny.com.br/1d926e/node/3fZr7o",
 							target: "_blank",
 							rel: "noopener noreferrer",
 							onClick: openModal,
@@ -205,7 +205,7 @@ function Hero({ openModal }) {
 								"Apenas ",
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 									className: "font-bold text-navy",
-									children: "R$ 27,00"
+									children: "R$ 19,90"
 								}),
 								" · ingresso único"
 							]
@@ -254,7 +254,7 @@ function Hero({ openModal }) {
 							className: "mt-10 flex flex-row gap-5 items-center",
 							style: { animation: "fadeUp 0.9s 0.75s both" },
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
-								href: "https://pay.assiny.com.br/sflEGK/node/w-jH0u",
+								href: "https://pay.assiny.com.br/1d926e/node/3fZr7o",
 								target: "_blank",
 								rel: "noopener noreferrer",
 								onClick: openModal,
@@ -264,7 +264,7 @@ function Hero({ openModal }) {
 								className: "text-sm text-muted-foreground",
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 									className: "text-navy font-bold text-base",
-									children: "R$ 27,00"
+									children: "R$ 19,90"
 								}), " · ingresso único"]
 							})]
 						}),
@@ -786,7 +786,7 @@ function FinalCTA({ openModal }) {
 						})]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
-						href: "https://pay.assiny.com.br/sflEGK/node/w-jH0u",
+						href: "https://pay.assiny.com.br/1d926e/node/3fZr7o",
 						target: "_blank",
 						rel: "noopener noreferrer",
 						"data-cta": "main",
