@@ -1,0 +1,1 @@
+var e=`/assets/pierry-lp2-BjQjrymJ.jpg`;export{e as t};
