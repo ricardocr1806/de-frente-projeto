@@ -3,7 +3,7 @@ import { n as require_jsx_runtime, r as require_react } from "../_libs/react+tan
 //#region node_modules/.nitro/vite/services/ssr/assets/obrigado-Bbt8QQW2.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
-var GROUP_LINK = "https://chat.whatsapp.com/KwPDf9cwvfRARpCOOIjJ29";
+var GROUP_LINK = "https://devzapp.com.br/api-engennier/campanha/api/redirect/v2/6a3b36b84234260001803574";
 function Obrigado() {
 	(0, import_react.useEffect)(() => {
 		if (typeof window !== "undefined" && window.fbq) window.fbq("track", "Purchase", {
