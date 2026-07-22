@@ -15,6 +15,7 @@ var LeadSchema = objectType({
 	fbclid: stringType().optional()
 });
 var WEBHOOK_URL = "https://falume.com.br/api/webhooks/lead/lf_5e20241321c0cb73f96cf402b8c3340eb78a";
+var N8N_WEBHOOK_URL = "https://apps-n8n.cwbnhf.easypanel.host/webhook/fdcc16f8-da0b-471f-ab17-32b25dfb9fd0";
 var sendLead_createServerFn_handler = createServerRpc({
 	id: "7de8aacdf31c96d188ac8c365e9f474d104b8c0651187c57ecedc3d90bb3fbaa",
 	name: "sendLead",
@@ -26,18 +27,23 @@ var sendLead = createServerFn({ method: "POST" }).validator(LeadSchema).handler(
 	Object.entries(utms).forEach(([k, v]) => {
 		if (v) utmFields[k] = v;
 	});
-	return { ok: (await (await fetch(WEBHOOK_URL, {
+	const payload = {
+		name,
+		email,
+		phone,
+		tags: [flow === "flow1" ? "quiz-pais" : "quiz-filhos"],
+		source: "quiz-mapa-identidade",
+		...utmFields
+	};
+	const post = (url) => fetch(url, {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({
-			name,
-			email,
-			phone,
-			tags: [flow === "flow1" ? "quiz-pais" : "quiz-filhos"],
-			source: "quiz-mapa-identidade",
-			...utmFields
-		})
-	})).json()).ok ?? false };
+		body: JSON.stringify(payload)
+	});
+	const [falumeRes] = await Promise.allSettled([post(WEBHOOK_URL), post(N8N_WEBHOOK_URL)]);
+	let ok = false;
+	if (falumeRes.status === "fulfilled") ok = (await falumeRes.value.json().catch(() => ({}))).ok ?? false;
+	return { ok };
 });
 //#endregion
 export { sendLead_createServerFn_handler };
