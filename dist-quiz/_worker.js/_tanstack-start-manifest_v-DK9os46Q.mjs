@@ -7,17 +7,17 @@ var tsrStartManifest = () => ({ routes: {
 			"/dashboard",
 			"/v2"
 		],
-		preloads: ["/assets/index-CL8n8kY4.js"],
+		preloads: ["/assets/index-CL8n8kY5.js"],
 		scripts: [{ attrs: {
 			type: "module",
 			async: !0,
-			src: "/assets/index-CL8n8kY4.js"
+			src: "/assets/index-CL8n8kY5.js"
 		} }]
 	},
 	"/": {
 		filePath: "/Users/ricardocastro/Documents/Quiz-Pierry-Site/src/routes/index.tsx",
 		children: void 0,
-		preloads: ["/assets/routes-C6aO6n3M.js", "/assets/PostResultFlow-CWMmTEfv.js"]
+		preloads: ["/assets/routes-C6aO6n3N.js", "/assets/PostResultFlow-CWMmTEfw.js"]
 	},
 	"/dashboard": {
 		filePath: "/Users/ricardocastro/Documents/Quiz-Pierry-Site/src/routes/dashboard.tsx",
@@ -27,7 +27,7 @@ var tsrStartManifest = () => ({ routes: {
 	"/v2": {
 		filePath: "/Users/ricardocastro/Documents/Quiz-Pierry-Site/src/routes/v2.tsx",
 		children: void 0,
-		preloads: ["/assets/v2-DzHsdVIF.js", "/assets/PostResultFlow-CWMmTEfv.js"]
+		preloads: ["/assets/v2-DzHsdVIG.js", "/assets/PostResultFlow-CWMmTEfw.js"]
 	}
 } });
 //#endregion
