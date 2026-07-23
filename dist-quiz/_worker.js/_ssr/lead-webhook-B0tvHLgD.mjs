@@ -15,7 +15,7 @@ var LeadSchema = objectType({
 	fbclid: stringType().optional()
 });
 var WEBHOOK_URL = "https://falume.com.br/api/webhooks/lead/lf_5e20241321c0cb73f96cf402b8c3340eb78a";
-var N8N_WEBHOOK_URL = "https://apps-n8n.cwbnhf.easypanel.host/webhook/fdcc16f8-da0b-471f-ab17-32b25dfb9fd0";
+var N8N_WEBHOOK_URL = "https://apps-n8n.cwbnhf.easypanel.host/webhook/idh-19";
 var sendLead_createServerFn_handler = createServerRpc({
 	id: "7de8aacdf31c96d188ac8c365e9f474d104b8c0651187c57ecedc3d90bb3fbaa",
 	name: "sendLead",
