@@ -7,17 +7,17 @@ var tsrStartManifest = () => ({ routes: {
 			"/dashboard",
 			"/v2"
 		],
-		preloads: ["/assets/index-CL8n8kY2.js"],
+		preloads: ["/assets/index-CL8n8kY3.js"],
 		scripts: [{ attrs: {
 			type: "module",
 			async: !0,
-			src: "/assets/index-CL8n8kY2.js"
+			src: "/assets/index-CL8n8kY3.js"
 		} }]
 	},
 	"/": {
 		filePath: "/Users/ricardocastro/Documents/Quiz-Pierry-Site/src/routes/index.tsx",
 		children: void 0,
-		preloads: ["/assets/routes-C6aO6n3K.js", "/assets/PostResultFlow-CWMmTEft.js"]
+		preloads: ["/assets/routes-C6aO6n3L.js", "/assets/PostResultFlow-CWMmTEfu.js"]
 	},
 	"/dashboard": {
 		filePath: "/Users/ricardocastro/Documents/Quiz-Pierry-Site/src/routes/dashboard.tsx",
@@ -27,7 +27,7 @@ var tsrStartManifest = () => ({ routes: {
 	"/v2": {
 		filePath: "/Users/ricardocastro/Documents/Quiz-Pierry-Site/src/routes/v2.tsx",
 		children: void 0,
-		preloads: ["/assets/v2-DzHsdVID.js", "/assets/PostResultFlow-CWMmTEft.js"]
+		preloads: ["/assets/v2-DzHsdVIE.js", "/assets/PostResultFlow-CWMmTEfu.js"]
 	}
 } });
 //#endregion
