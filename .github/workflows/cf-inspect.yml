@@ -1,0 +1,26 @@
+name: CF inspect painel
+on: { workflow_dispatch: {} }
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          Z=f9df634009ef1d560b200b09db25d5d1
+          A=https://api.cloudflare.com/client/v4
+          echo "=== ROTAS DA ZONA ==="
+          curl -s -H "Authorization: Bearer $CF_TOKEN" "$A/zones/$Z/workers/routes" -o r.json
+          node -e "const d=require('./r.json');console.log(JSON.stringify(d.result,null,1))"
+          echo "=== SETTINGS DO SCRIPT (bindings/vars) ==="
+          curl -s -H "Authorization: Bearer $CF_TOKEN" "$A/accounts/$CF_ACCT/workers/scripts/painel-quiz-pierry/settings" -o s.json
+          node -e "const d=require('./s.json');const r=d.result||{};console.log('compat:',r.compatibility_date,JSON.stringify(r.compatibility_flags||[]));console.log('bindings:',JSON.stringify((r.bindings||[]).map(b=>({name:b.name,type:b.type,text:b.type==='plain_text'?b.text:undefined})),null,1))"
+          echo "=== DOMINIOS DO WORKER ==="
+          curl -s -H "Authorization: Bearer $CF_TOKEN" "$A/accounts/$CF_ACCT/workers/domains" -o d.json
+          node -e "const d=require('./d.json');console.log(JSON.stringify((d.result||[]).filter(x=>x.service==='painel-quiz-pierry'),null,1))"
+          echo "=== BACKUP DO SCRIPT ATUAL ==="
+          curl -s -H "Authorization: Bearer $CF_TOKEN" "$A/accounts/$CF_ACCT/workers/scripts/painel-quiz-pierry/content" -o worker-atual.js -D headers.txt
+          head -3 headers.txt; wc -c worker-atual.js
+      - uses: actions/upload-artifact@v4
+        with: { name: worker-atual, path: worker-atual.js }
