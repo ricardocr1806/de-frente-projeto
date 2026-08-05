@@ -272,7 +272,7 @@ var public_assets_data_default = {
 };
 //#endregion
 //#region #nitro/virtual/public-assets
-var publicAssetBases = {};
+var publicAssetBases = { "/assets/": {} };
 function isPublicAssetURL(id = "") {
 	if (public_assets_data_default[id]) return true;
 	for (const base in publicAssetBases) if (id.startsWith(base)) return true;

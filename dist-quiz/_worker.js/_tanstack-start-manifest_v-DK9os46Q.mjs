@@ -7,27 +7,27 @@ var tsrStartManifest = () => ({ routes: {
 			"/dashboard",
 			"/v2"
 		],
-		preloads: ["/assets/index-CL8n8kY5.js"],
+		preloads: ["/assets/index-CL8n8kY5-a15.js"],
 		scripts: [{ attrs: {
 			type: "module",
 			async: !0,
-			src: "/assets/index-CL8n8kY5.js"
+			src: "/assets/index-CL8n8kY5-a15.js"
 		} }]
 	},
 	"/": {
 		filePath: "/Users/ricardocastro/Documents/Quiz-Pierry-Site/src/routes/index.tsx",
 		children: void 0,
-		preloads: ["/assets/routes-C6aO6n3N.js", "/assets/PostResultFlow-CWMmTEfw.js"]
+		preloads: ["/assets/routes-C6aO6n3N-a15.js", "/assets/PostResultFlow-CWMmTEfw-a15.js"]
 	},
 	"/dashboard": {
 		filePath: "/Users/ricardocastro/Documents/Quiz-Pierry-Site/src/routes/dashboard.tsx",
 		children: void 0,
-		preloads: ["/assets/dashboard-ByV2U-A-.js"]
+		preloads: ["/assets/dashboard-ByV2U-A--a15.js"]
 	},
 	"/v2": {
 		filePath: "/Users/ricardocastro/Documents/Quiz-Pierry-Site/src/routes/v2.tsx",
 		children: void 0,
-		preloads: ["/assets/v2-DzHsdVIG.js", "/assets/PostResultFlow-CWMmTEfw.js"]
+		preloads: ["/assets/v2-DzHsdVIG-a15.js", "/assets/PostResultFlow-CWMmTEfw-a15.js"]
 	}
 } });
 //#endregion
