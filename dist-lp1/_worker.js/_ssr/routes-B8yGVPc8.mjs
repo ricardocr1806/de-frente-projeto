@@ -56,7 +56,7 @@ function appendUtmsToUrl(baseUrl) {
 var antes_depois_default = "/assets/antes-depois-bg4kA1h_.png";
 var hero_mobile_default = "/assets/hero-mobile-BbMJxyvr.png";
 var pierry_rodrigues_default = "/assets/pierry-rodrigues-D_MOeR7m.jpg";
-var CHECKOUT_URL = "https://pay.assiny.com.br/1d926e/node/3fZr7o";
+var CHECKOUT_URL = "https://payfast.greenn.com.br/vqn4au9/offer/jJWabv?b_id_1=hvyb8uu&b_id_2=m79tysp&b_id_3=wsgkzrr&b_offer_3=I7WxcT&b_id_4=egs4ue5&b_offer_4=qdyuws";
 function trackCheckout(e) {
 	if (e) e.preventDefault();
 	if (typeof window !== "undefined" && window.fbq) window.fbq("track", "InitiateCheckout", {
