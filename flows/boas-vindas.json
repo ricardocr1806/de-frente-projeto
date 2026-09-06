@@ -1,0 +1,32 @@
+{
+  "name": "Boas-vindas e triagem",
+  "status": "draft",
+  "blocks": [
+    { "id": "inicio", "type": "trigger", "match": "any" },
+    {
+      "id": "saudacao",
+      "type": "text",
+      "text": "Oi {{nome}}! Aqui é da equipe. Me conta rapidinho o que você procura?",
+      "wait_reply": true,
+      "timeout_seconds": 3600
+    },
+    { "id": "marca_lead", "type": "tag_add", "tag": "lead-whatsapp" },
+    { "id": "funil", "type": "pipeline", "pipeline": "Vendas", "stage": "Novo lead" },
+    { "id": "avisa_transferencia", "type": "text", "text": "Perfeito! Já estou te passando para um consultor." },
+    { "id": "atendente", "type": "transfer", "assign_type": "team", "team": "Comercial" },
+    { "id": "sem_resposta", "type": "text", "text": "Fico por aqui, mas é só chamar quando puder falar. 👋" },
+    { "id": "marca_frio", "type": "tag_add", "tag": "sem-resposta" },
+    { "id": "fim", "type": "end" }
+  ],
+  "connections": [
+    { "from": "inicio", "to": "saudacao" },
+    { "from": "saudacao", "output": "answered", "to": "marca_lead" },
+    { "from": "marca_lead", "to": "funil" },
+    { "from": "funil", "to": "avisa_transferencia" },
+    { "from": "avisa_transferencia", "to": "atendente" },
+    { "from": "atendente", "to": "fim" },
+    { "from": "saudacao", "output": "timeout", "to": "sem_resposta" },
+    { "from": "sem_resposta", "to": "marca_frio" },
+    { "from": "marca_frio", "to": "fim" }
+  ]
+}
