@@ -1,29 +1,92 @@
 {
   "id": "85155bd0-adb0-43f8-a30d-29975e84a665",
   "name": "🚗 Concessionária · SDR 24h com IA que qualifica",
-  "description": "Mensagem nova -> menu de 3 intencoes -> COMPRA passa pela IA ate ter modelo, zero/seminovo, faixa de preco, forma de pagamento e prazo -> negocio QUENTE no funil e rodizio entre os vendedores. Ramos para troca de usado, oficina e resgate de quem nao respondeu. Criado via API.",
+  "description": "Mensagem nova -> menu de 3 intencoes -> COMPRA passa pela IA ate ter modelo, zero/seminovo, faixa de preco, forma de pagamento e prazo -> negocio QUENTE no funil e rodizio entre os vendedores. Ramos para troca de usado, oficina e resgate de quem nao respondeu. Cards numerados por trecho: 1 entrada, 2 compra, 3 troca, 4 oficina, 5 resgate, 6 saida fria.",
   "status": "draft",
   "blocks": [
-    { "id": "nota_leitura", "type": "comment", "text": "COMO LER: toda mensagem nova cai aqui. A assistente cumprimenta, descobre a INTENÇÃO em 1 clique e só chama um vendedor quando o lead já está qualificado." },
-    { "id": "nota_ia", "type": "comment", "text": "O bloco de IA é quem CONVERSA: pergunta, ouve e pergunta de novo até ter modelo, zero/seminovo, faixa de preço, forma de pagamento e prazo. Sai por 3 portas: qualificou, não conseguiu, ou o cliente sumiu." },
-
-    { "id": "inicio", "type": "trigger", "match": "any", "label": "Cliente chamou no WhatsApp" },
-    { "id": "typing1", "type": "typing", "mode": "random", "min": 1, "max": 3 },
+    {
+      "id": "nota_mapa",
+      "type": "comment",
+      "text": "📖 COMO LER ESTE FLUXO\n\nCada card leva o número do trecho a que pertence:\n\n1 ENTRADA → 2 COMPRA • 3 TROCA • 4 OFICINA • 5 RESGATE → 6 SAÍDA FRIA\n\nDá pra seguir qualquer caminho de ponta a ponta só pela numeração."
+    },
+    {
+      "id": "nota_1",
+      "type": "comment",
+      "text": "1 · ENTRADA\n\nToda mensagem nova cai aqui. A assistente cumprimenta e descobre a INTENÇÃO em um clique — sem pedir pro cliente digitar nada."
+    },
+    {
+      "id": "nota_2",
+      "type": "comment",
+      "text": "2 · COMPRA — o coração do fluxo\n\nA IA conversa de verdade: pergunta, ouve e pergunta de novo até o cliente dizer as 5 coisas (modelo, zero ou seminovo, faixa de preço, forma de pagamento, prazo).\n\nEla tem 3 saídas e NENHUMA cai no vazio:\n• qualificou → card QUENTE + rodízio (2.4 a 2.8)\n• não conseguiu → humano assume (2.9)\n• cliente sumiu → saída fria (6)"
+    },
+    {
+      "id": "nota_3",
+      "type": "comment",
+      "text": "3 · TROCA DO USADO\n\nColeta modelo, ano, km e foto numa mensagem só. Espera até 24h. O que o cliente escrever fica gravado no campo veiculo_troca, então o avaliador já abre a conversa sabendo do que se trata."
+    },
+    {
+      "id": "nota_4",
+      "type": "comment",
+      "text": "4 · OFICINA / PÓS-VENDA\n\nMesma lógica da troca: pergunta carro, problema e melhor dia, guarda em servico_desejado e entrega ao consultor de serviços."
+    },
+    {
+      "id": "nota_5",
+      "type": "comment",
+      "text": "5 · RESGATE\n\nQuem abriu a conversa e não clicou em nada NÃO é descartado: 30 minutos depois o fluxo reabre o papo. Se a pessoa responder, ela entra direto na qualificação da IA (volta pro 2.3)."
+    },
+    {
+      "id": "nota_6",
+      "type": "comment",
+      "text": "6 · SAÍDA FRIA\n\nTodo caminho sem resposta termina aqui — e termina ORGANIZADO: etiqueta FRIO e card de volta na base, pronto para campanha de remarketing depois."
+    },
+    {
+      "id": "inicio",
+      "type": "trigger",
+      "match": "any",
+      "label": "1.1 · Cliente chamou no WhatsApp"
+    },
+    {
+      "id": "typing1",
+      "type": "typing",
+      "mode": "random",
+      "min": 1,
+      "max": 3,
+      "label": "1.2 · Digitando… (parece gente)"
+    },
     {
       "id": "menu",
       "type": "buttons",
       "text": "Oi {{nome}}! 👋 Aqui é a Júlia, assistente da [SUA CONCESSIONÁRIA].\n\nPra eu te ajudar rápido, me diz: o que você precisa hoje?",
       "buttons": [
-        { "id": "comprar", "label": "Comprar um carro 🚗" },
-        { "id": "troca", "label": "Avaliar meu usado 🔁" },
-        { "id": "oficina", "label": "Revisão / oficina 🔧" }
+        {
+          "id": "comprar",
+          "label": "Comprar um carro 🚗"
+        },
+        {
+          "id": "troca",
+          "label": "Avaliar meu usado 🔁"
+        },
+        {
+          "id": "oficina",
+          "label": "Revisão / oficina 🔧"
+        }
       ],
       "timeout_seconds": 3600,
-      "label": "Menu de intenção"
+      "label": "1.3 · Menu de intenção (3 caminhos)"
     },
-
-    { "id": "tag_comprar", "type": "tag_add", "tag": "quer-comprar", "label": "Marca a intenção" },
-    { "id": "funil_qualif", "type": "pipeline", "pipeline": "39d702c7-4b4d-4d32-8a38-1c2d3231b589", "stage": "b5fe47b9-3e56-4040-9a02-4b83c42a3c26", "label": "Entra em Qualificação" },
+    {
+      "id": "tag_comprar",
+      "type": "tag_add",
+      "tag": "quer-comprar",
+      "label": "2.1 · Marca: quer comprar"
+    },
+    {
+      "id": "funil_qualif",
+      "type": "pipeline",
+      "pipeline": "39d702c7-4b4d-4d32-8a38-1c2d3231b589",
+      "stage": "b5fe47b9-3e56-4040-9a02-4b83c42a3c26",
+      "label": "2.2 · Card entra em Qualificação"
+    },
     {
       "id": "ia_compra",
       "type": "ai",
@@ -32,73 +95,303 @@
       "max_exchanges": 6,
       "timeout_seconds": 1800,
       "save_to": "perfil_comprador",
-      "label": "IA · Consultora que qualifica"
+      "label": "2.3 · IA · Júlia qualifica (5 respostas)"
     },
-    { "id": "salva_perfil", "type": "crm_field", "field": "perfil_veiculo", "value": "{{perfil_comprador}}", "label": "Salva o perfil no CRM" },
-    { "id": "funil_quente", "type": "pipeline", "pipeline": "39d702c7-4b4d-4d32-8a38-1c2d3231b589", "stage": "c8226213-601d-4759-84ed-c499dc9ae656", "value": 80000, "label": "Vira negócio QUENTE" },
-    { "id": "rodizio", "type": "distribute", "team": "62d3c387-142b-4e8b-9ddf-6452edf971d0", "label": "Rodízio entre os vendedores" },
-    { "id": "txt_entrega", "type": "text", "text": "Perfeito, {{nome}}! 🙌 Já anotei tudo aqui.\n\nUm consultor da nossa equipe vai te chamar em instantes com as opções que batem com o que você me contou — fotos, valores e condições. Qualquer coisa, é só mandar mensagem!", "label": "Entrega o lead pronto" },
-    { "id": "fim_compra", "type": "end" },
-    { "id": "transfere_vendas", "type": "transfer", "assign_type": "team", "team": "62d3c387-142b-4e8b-9ddf-6452edf971d0", "note": "A IA não fechou a qualificação. Histórico completo na conversa — confirmar modelo, faixa de preço e forma de pagamento.", "label": "Humano assume" },
-
-    { "id": "tag_troca", "type": "tag_add", "tag": "quer-trocar-usado", "label": "Marca intenção de troca" },
-    { "id": "txt_pede_veiculo", "type": "text", "text": "Show! Pra avaliar seu carro direitinho, me manda numa mensagem só:\n\n• Modelo e versão\n• Ano do modelo\n• Quilometragem aproximada\n\nSe puder mandar uma foto do painel e da frente, ajuda bastante 📸", "label": "Pede os dados do usado" },
-    { "id": "aguarda_veiculo", "type": "input", "variable": "veiculo_troca", "timeout_seconds": 86400, "label": "Aguarda os dados do carro" },
-    { "id": "salva_veiculo", "type": "crm_field", "field": "veiculo_troca", "value": "{{veiculo_troca}}", "label": "Guarda o usado ofertado" },
-    { "id": "funil_troca", "type": "pipeline", "pipeline": "39d702c7-4b4d-4d32-8a38-1c2d3231b589", "stage": "f8c48c88-a0cc-49ba-b36b-d01f260299da", "label": "Vai para Avaliação" },
-    { "id": "transfere_avaliacao", "type": "transfer", "assign_type": "team", "team": "62d3c387-142b-4e8b-9ddf-6452edf971d0", "note": "Cliente quer avaliar o usado. Dados do veículo no campo veiculo_troca.", "label": "Entrega para avaliação" },
-
-    { "id": "tag_oficina", "type": "tag_add", "tag": "pos-venda-oficina", "label": "Marca pós-venda" },
-    { "id": "txt_pede_servico", "type": "text", "text": "Claro! Me conta em uma mensagem:\n\n• Modelo e ano do carro\n• O que você precisa (revisão, barulho, luz no painel, funilaria…)\n• Qual o melhor dia pra você trazer\n\nJá adianto pro nosso consultor de serviços 🔧", "label": "Pede o que precisa" },
-    { "id": "aguarda_servico", "type": "input", "variable": "servico_desejado", "timeout_seconds": 86400, "label": "Aguarda a descrição" },
-    { "id": "salva_servico", "type": "crm_field", "field": "servico_desejado", "value": "{{servico_desejado}}", "label": "Guarda o serviço pedido" },
-    { "id": "transfere_oficina", "type": "transfer", "assign_type": "team", "team": "62d3c387-142b-4e8b-9ddf-6452edf971d0", "note": "Agendamento de oficina. O que o cliente pediu está no campo servico_desejado.", "label": "Entrega à oficina" },
-
-    { "id": "espera", "type": "delay", "amount": 30, "unit": "minutes", "label": "Dá um tempo" },
-    { "id": "txt_resgate", "type": "text", "text": "Oi {{nome}}, ainda por aí? 😊\n\nSe preferir, me conta com suas palavras o que você está procurando que eu te ajudo daqui mesmo.", "label": "Reabre a conversa" },
-    { "id": "aguarda_resgate", "type": "input", "variable": "resposta_livre", "timeout_seconds": 172800, "label": "Aguarda resposta livre" },
-
-    { "id": "tag_frio", "type": "tag_add", "tag": "FRIO", "label": "Marca como frio" },
-    { "id": "funil_base", "type": "pipeline", "pipeline": "39d702c7-4b4d-4d32-8a38-1c2d3231b589", "stage": "36065a9e-8315-4c53-8f91-86d6acc9a4a7", "label": "Volta pra base" },
-    { "id": "fim_frio", "type": "end" }
+    {
+      "id": "salva_perfil",
+      "type": "crm_field",
+      "field": "perfil_veiculo",
+      "value": "{{perfil_comprador}}",
+      "label": "2.4 · Salva o perfil no CRM"
+    },
+    {
+      "id": "funil_quente",
+      "type": "pipeline",
+      "pipeline": "39d702c7-4b4d-4d32-8a38-1c2d3231b589",
+      "stage": "c8226213-601d-4759-84ed-c499dc9ae656",
+      "value": 80000,
+      "label": "2.5 · Card vira QUENTE · R$ 80.000"
+    },
+    {
+      "id": "rodizio",
+      "type": "distribute",
+      "team": "62d3c387-142b-4e8b-9ddf-6452edf971d0",
+      "label": "2.6 · Rodízio entre os vendedores"
+    },
+    {
+      "id": "txt_entrega",
+      "type": "text",
+      "text": "Perfeito, {{nome}}! 🙌 Já anotei tudo aqui.\n\nUm consultor da nossa equipe vai te chamar em instantes com as opções que batem com o que você me contou — fotos, valores e condições. Qualquer coisa, é só mandar mensagem!",
+      "label": "2.7 · Entrega o lead pronto"
+    },
+    {
+      "id": "fim_compra",
+      "type": "end",
+      "label": "2.8 · FIM · lead qualificado ✅"
+    },
+    {
+      "id": "transfere_vendas",
+      "type": "transfer",
+      "assign_type": "team",
+      "team": "62d3c387-142b-4e8b-9ddf-6452edf971d0",
+      "note": "A IA não fechou a qualificação. Histórico completo na conversa — confirmar modelo, faixa de preço e forma de pagamento.",
+      "label": "2.9 · ESCAPE · humano assume 👤"
+    },
+    {
+      "id": "tag_troca",
+      "type": "tag_add",
+      "tag": "quer-trocar-usado",
+      "label": "3.1 · Marca: quer trocar usado"
+    },
+    {
+      "id": "txt_pede_veiculo",
+      "type": "text",
+      "text": "Show! Pra avaliar seu carro direitinho, me manda numa mensagem só:\n\n• Modelo e versão\n• Ano do modelo\n• Quilometragem aproximada\n\nSe puder mandar uma foto do painel e da frente, ajuda bastante 📸",
+      "label": "3.2 · Pede modelo, ano, km e foto"
+    },
+    {
+      "id": "aguarda_veiculo",
+      "type": "input",
+      "variable": "veiculo_troca",
+      "timeout_seconds": 86400,
+      "label": "3.3 · Aguarda os dados (até 24h)"
+    },
+    {
+      "id": "salva_veiculo",
+      "type": "crm_field",
+      "field": "veiculo_troca",
+      "value": "{{veiculo_troca}}",
+      "label": "3.4 · Salva o usado no CRM"
+    },
+    {
+      "id": "funil_troca",
+      "type": "pipeline",
+      "pipeline": "39d702c7-4b4d-4d32-8a38-1c2d3231b589",
+      "stage": "f8c48c88-a0cc-49ba-b36b-d01f260299da",
+      "label": "3.5 · Card vai para Avaliação"
+    },
+    {
+      "id": "transfere_avaliacao",
+      "type": "transfer",
+      "assign_type": "team",
+      "team": "62d3c387-142b-4e8b-9ddf-6452edf971d0",
+      "note": "Cliente quer avaliar o usado. Dados do veículo no campo veiculo_troca.",
+      "label": "3.6 · FIM · avaliador assume 👤"
+    },
+    {
+      "id": "tag_oficina",
+      "type": "tag_add",
+      "tag": "pos-venda-oficina",
+      "label": "4.1 · Marca: pós-venda / oficina"
+    },
+    {
+      "id": "txt_pede_servico",
+      "type": "text",
+      "text": "Claro! Me conta em uma mensagem:\n\n• Modelo e ano do carro\n• O que você precisa (revisão, barulho, luz no painel, funilaria…)\n• Qual o melhor dia pra você trazer\n\nJá adianto pro nosso consultor de serviços 🔧",
+      "label": "4.2 · Pede carro, problema e melhor dia"
+    },
+    {
+      "id": "aguarda_servico",
+      "type": "input",
+      "variable": "servico_desejado",
+      "timeout_seconds": 86400,
+      "label": "4.3 · Aguarda a descrição (até 24h)"
+    },
+    {
+      "id": "salva_servico",
+      "type": "crm_field",
+      "field": "servico_desejado",
+      "value": "{{servico_desejado}}",
+      "label": "4.4 · Salva o serviço no CRM"
+    },
+    {
+      "id": "transfere_oficina",
+      "type": "transfer",
+      "assign_type": "team",
+      "team": "62d3c387-142b-4e8b-9ddf-6452edf971d0",
+      "note": "Agendamento de oficina. O que o cliente pediu está no campo servico_desejado.",
+      "label": "4.5 · FIM · consultor de serviços assume 👤"
+    },
+    {
+      "id": "espera",
+      "type": "delay",
+      "amount": 30,
+      "unit": "minutes",
+      "label": "5.1 · Espera 30 minutos"
+    },
+    {
+      "id": "txt_resgate",
+      "type": "text",
+      "text": "Oi {{nome}}, ainda por aí? 😊\n\nSe preferir, me conta com suas palavras o que você está procurando que eu te ajudo daqui mesmo.",
+      "label": "5.2 · Reabre a conversa"
+    },
+    {
+      "id": "aguarda_resgate",
+      "type": "input",
+      "variable": "resposta_livre",
+      "timeout_seconds": 172800,
+      "label": "5.3 · Aguarda resposta livre (48h) → volta pro 2.3"
+    },
+    {
+      "id": "tag_frio",
+      "type": "tag_add",
+      "tag": "FRIO",
+      "label": "6.1 · Marca FRIO"
+    },
+    {
+      "id": "funil_base",
+      "type": "pipeline",
+      "pipeline": "39d702c7-4b4d-4d32-8a38-1c2d3231b589",
+      "stage": "36065a9e-8315-4c53-8f91-86d6acc9a4a7",
+      "label": "6.2 · Card volta para a base"
+    },
+    {
+      "id": "fim_frio",
+      "type": "end",
+      "label": "6.3 · FIM · fica para remarketing ❄️"
+    }
   ],
   "connections": [
-    { "from": "inicio", "to": "typing1" },
-    { "from": "typing1", "to": "menu" },
-
-    { "from": "menu", "output": "comprar", "to": "tag_comprar" },
-    { "from": "tag_comprar", "to": "funil_qualif" },
-    { "from": "funil_qualif", "to": "ia_compra" },
-    { "from": "ia_compra", "output": "goal", "to": "salva_perfil" },
-    { "from": "salva_perfil", "to": "funil_quente" },
-    { "from": "funil_quente", "to": "rodizio" },
-    { "from": "rodizio", "to": "txt_entrega" },
-    { "from": "txt_entrega", "to": "fim_compra" },
-    { "from": "ia_compra", "output": "limit", "to": "transfere_vendas" },
-    { "from": "ia_compra", "output": "timeout", "to": "tag_frio" },
-
-    { "from": "menu", "output": "troca", "to": "tag_troca" },
-    { "from": "tag_troca", "to": "txt_pede_veiculo" },
-    { "from": "txt_pede_veiculo", "to": "aguarda_veiculo" },
-    { "from": "aguarda_veiculo", "output": "answered", "to": "salva_veiculo" },
-    { "from": "salva_veiculo", "to": "funil_troca" },
-    { "from": "funil_troca", "to": "transfere_avaliacao" },
-    { "from": "aguarda_veiculo", "output": "timeout", "to": "tag_frio" },
-
-    { "from": "menu", "output": "oficina", "to": "tag_oficina" },
-    { "from": "tag_oficina", "to": "txt_pede_servico" },
-    { "from": "txt_pede_servico", "to": "aguarda_servico" },
-    { "from": "aguarda_servico", "output": "answered", "to": "salva_servico" },
-    { "from": "salva_servico", "to": "transfere_oficina" },
-    { "from": "aguarda_servico", "output": "timeout", "to": "tag_frio" },
-
-    { "from": "menu", "output": "default", "to": "espera" },
-    { "from": "espera", "to": "txt_resgate" },
-    { "from": "txt_resgate", "to": "aguarda_resgate" },
-    { "from": "aguarda_resgate", "output": "answered", "to": "ia_compra" },
-    { "from": "aguarda_resgate", "output": "timeout", "to": "tag_frio" },
-
-    { "from": "tag_frio", "to": "funil_base" },
-    { "from": "funil_base", "to": "fim_frio" }
+    {
+      "from": "inicio",
+      "to": "typing1"
+    },
+    {
+      "from": "typing1",
+      "to": "menu"
+    },
+    {
+      "from": "menu",
+      "output": "comprar",
+      "to": "tag_comprar"
+    },
+    {
+      "from": "tag_comprar",
+      "to": "funil_qualif"
+    },
+    {
+      "from": "funil_qualif",
+      "to": "ia_compra"
+    },
+    {
+      "from": "ia_compra",
+      "output": "goal",
+      "to": "salva_perfil"
+    },
+    {
+      "from": "salva_perfil",
+      "to": "funil_quente"
+    },
+    {
+      "from": "funil_quente",
+      "to": "rodizio"
+    },
+    {
+      "from": "rodizio",
+      "to": "txt_entrega"
+    },
+    {
+      "from": "txt_entrega",
+      "to": "fim_compra"
+    },
+    {
+      "from": "ia_compra",
+      "output": "limit",
+      "to": "transfere_vendas"
+    },
+    {
+      "from": "ia_compra",
+      "output": "timeout",
+      "to": "tag_frio"
+    },
+    {
+      "from": "menu",
+      "output": "troca",
+      "to": "tag_troca"
+    },
+    {
+      "from": "tag_troca",
+      "to": "txt_pede_veiculo"
+    },
+    {
+      "from": "txt_pede_veiculo",
+      "to": "aguarda_veiculo"
+    },
+    {
+      "from": "aguarda_veiculo",
+      "output": "answered",
+      "to": "salva_veiculo"
+    },
+    {
+      "from": "salva_veiculo",
+      "to": "funil_troca"
+    },
+    {
+      "from": "funil_troca",
+      "to": "transfere_avaliacao"
+    },
+    {
+      "from": "aguarda_veiculo",
+      "output": "timeout",
+      "to": "tag_frio"
+    },
+    {
+      "from": "menu",
+      "output": "oficina",
+      "to": "tag_oficina"
+    },
+    {
+      "from": "tag_oficina",
+      "to": "txt_pede_servico"
+    },
+    {
+      "from": "txt_pede_servico",
+      "to": "aguarda_servico"
+    },
+    {
+      "from": "aguarda_servico",
+      "output": "answered",
+      "to": "salva_servico"
+    },
+    {
+      "from": "salva_servico",
+      "to": "transfere_oficina"
+    },
+    {
+      "from": "aguarda_servico",
+      "output": "timeout",
+      "to": "tag_frio"
+    },
+    {
+      "from": "menu",
+      "output": "default",
+      "to": "espera"
+    },
+    {
+      "from": "espera",
+      "to": "txt_resgate"
+    },
+    {
+      "from": "txt_resgate",
+      "to": "aguarda_resgate"
+    },
+    {
+      "from": "aguarda_resgate",
+      "output": "answered",
+      "to": "ia_compra"
+    },
+    {
+      "from": "aguarda_resgate",
+      "output": "timeout",
+      "to": "tag_frio"
+    },
+    {
+      "from": "tag_frio",
+      "to": "funil_base"
+    },
+    {
+      "from": "funil_base",
+      "to": "fim_frio"
+    }
   ]
 }
