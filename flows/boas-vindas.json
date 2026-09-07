@@ -1,32 +1,71 @@
 {
-  "name": "Boas-vindas e triagem",
+  "id": "8ada7af7-34bb-4897-8ad7-525d65105033",
+  "name": "Boas-vindas e triagem (WhatsApp)",
+  "description": "Mensagem nova no WhatsApp -> saudacao -> menu de 3 intencoes -> orcamento entra no funil, duvida passa pela IA, cliente atual vai direto -> transferencia para humano. Quem nao responde sai etiquetado. Criado via API.",
   "status": "draft",
   "blocks": [
-    { "id": "inicio", "type": "trigger", "match": "any" },
+    { "id": "inicio", "type": "trigger", "label": "Cliente chamou no WhatsApp" },
+    { "id": "digitando", "type": "typing", "max": 4 },
+    { "id": "saudacao", "type": "text", "text": "Oi {{nome}}! 👋 Aqui é da equipe. Que bom te ver por aqui.", "label": "Saudação" },
     {
-      "id": "saudacao",
-      "type": "text",
-      "text": "Oi {{nome}}! Aqui é da equipe. Me conta rapidinho o que você procura?",
-      "wait_reply": true,
-      "timeout_seconds": 3600
+      "id": "menu",
+      "type": "buttons",
+      "text": "Pra eu te direcionar certo, o que você precisa agora?",
+      "buttons": [
+        { "id": "orcamento", "label": "Quero um orçamento" },
+        { "id": "duvida", "label": "Tirar uma dúvida" },
+        { "id": "cliente", "label": "Já sou cliente" }
+      ],
+      "timeout_seconds": 3600,
+      "label": "Menu de intenção"
     },
-    { "id": "marca_lead", "type": "tag_add", "tag": "lead-whatsapp" },
-    { "id": "funil", "type": "pipeline", "pipeline": "Vendas", "stage": "Novo lead" },
-    { "id": "avisa_transferencia", "type": "text", "text": "Perfeito! Já estou te passando para um consultor." },
-    { "id": "atendente", "type": "transfer", "assign_type": "team", "team": "Comercial" },
-    { "id": "sem_resposta", "type": "text", "text": "Fico por aqui, mas é só chamar quando puder falar. 👋" },
-    { "id": "marca_frio", "type": "tag_add", "tag": "sem-resposta" },
+    { "id": "tag_orcamento", "type": "tag_add", "tag": "quer-orcamento", "label": "Marca a intenção" },
+    {
+      "id": "funil",
+      "type": "pipeline",
+      "pipeline": "39d702c7-4b4d-4d32-8a38-1c2d3231b589",
+      "stage": "36065a9e-8315-4c53-8f91-86d6acc9a4a7",
+      "label": "Entra no funil Leads"
+    },
+    { "id": "aviso_transfer", "type": "text", "text": "Perfeito! Já estou chamando um consultor pra montar isso com você. Um instante 🙂", "label": "Avisa que vai transferir" },
+    {
+      "id": "ia",
+      "type": "ai",
+      "prompt": "Você é um atendente cordial e objetivo. Responda em português do Brasil, com frases curtas, uma pergunta por vez. Nunca invente preço, prazo ou condição — se não souber, diga que vai confirmar com a equipe.",
+      "goal": "Entender qual é a dúvida concreta do contato, dita por ele mesmo, e resumi-la em uma frase.",
+      "save_to": "duvida_do_cliente",
+      "label": "IA · entende a dúvida"
+    },
+    { "id": "salva_duvida", "type": "crm_field", "field": "duvida_inicial", "value": "{{duvida_do_cliente}}", "label": "Salva a dúvida no CRM" },
+    { "id": "tag_cliente", "type": "tag_add", "tag": "cliente-atual", "label": "Marca cliente atual" },
+    {
+      "id": "transfere",
+      "type": "transfer",
+      "team": "62d3c387-142b-4e8b-9ddf-6452edf971d0",
+      "note": "Veio do fluxo de boas-vindas. Intenção registrada nas etiquetas do contato.",
+      "label": "Humano assume"
+    },
+    { "id": "tag_frio", "type": "tag_add", "tag": "sem-resposta", "label": "Marca como frio" },
+    { "id": "despedida", "type": "text", "text": "Sem problema! Quando puder falar é só me chamar aqui que eu te atendo. 👋", "label": "Despedida" },
     { "id": "fim", "type": "end" }
   ],
   "connections": [
-    { "from": "inicio", "to": "saudacao" },
-    { "from": "saudacao", "output": "answered", "to": "marca_lead" },
-    { "from": "marca_lead", "to": "funil" },
-    { "from": "funil", "to": "avisa_transferencia" },
-    { "from": "avisa_transferencia", "to": "atendente" },
-    { "from": "atendente", "to": "fim" },
-    { "from": "saudacao", "output": "timeout", "to": "sem_resposta" },
-    { "from": "sem_resposta", "to": "marca_frio" },
-    { "from": "marca_frio", "to": "fim" }
+    { "from": "inicio", "to": "digitando" },
+    { "from": "digitando", "to": "saudacao" },
+    { "from": "saudacao", "to": "menu" },
+    { "from": "menu", "to": "tag_orcamento", "output": "orcamento" },
+    { "from": "tag_orcamento", "to": "funil" },
+    { "from": "funil", "to": "aviso_transfer" },
+    { "from": "aviso_transfer", "to": "transfere" },
+    { "from": "menu", "to": "ia", "output": "duvida" },
+    { "from": "ia", "to": "salva_duvida", "output": "goal" },
+    { "from": "salva_duvida", "to": "transfere" },
+    { "from": "ia", "to": "transfere", "output": "limit" },
+    { "from": "ia", "to": "tag_frio", "output": "timeout" },
+    { "from": "menu", "to": "tag_cliente", "output": "cliente" },
+    { "from": "tag_cliente", "to": "transfere" },
+    { "from": "menu", "to": "tag_frio", "output": "default" },
+    { "from": "tag_frio", "to": "despedida" },
+    { "from": "despedida", "to": "fim" }
   ]
 }
