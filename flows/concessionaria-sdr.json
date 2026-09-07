@@ -1,0 +1,104 @@
+{
+  "id": "85155bd0-adb0-43f8-a30d-29975e84a665",
+  "name": "🚗 Concessionária · SDR 24h com IA que qualifica",
+  "description": "Mensagem nova -> menu de 3 intencoes -> COMPRA passa pela IA ate ter modelo, zero/seminovo, faixa de preco, forma de pagamento e prazo -> negocio QUENTE no funil e rodizio entre os vendedores. Ramos para troca de usado, oficina e resgate de quem nao respondeu. Criado via API.",
+  "status": "draft",
+  "blocks": [
+    { "id": "nota_leitura", "type": "comment", "text": "COMO LER: toda mensagem nova cai aqui. A assistente cumprimenta, descobre a INTENÇÃO em 1 clique e só chama um vendedor quando o lead já está qualificado." },
+    { "id": "nota_ia", "type": "comment", "text": "O bloco de IA é quem CONVERSA: pergunta, ouve e pergunta de novo até ter modelo, zero/seminovo, faixa de preço, forma de pagamento e prazo. Sai por 3 portas: qualificou, não conseguiu, ou o cliente sumiu." },
+
+    { "id": "inicio", "type": "trigger", "match": "any", "label": "Cliente chamou no WhatsApp" },
+    { "id": "typing1", "type": "typing", "mode": "random", "min": 1, "max": 3 },
+    {
+      "id": "menu",
+      "type": "buttons",
+      "text": "Oi {{nome}}! 👋 Aqui é a Júlia, assistente da [SUA CONCESSIONÁRIA].\n\nPra eu te ajudar rápido, me diz: o que você precisa hoje?",
+      "buttons": [
+        { "id": "comprar", "label": "Comprar um carro 🚗" },
+        { "id": "troca", "label": "Avaliar meu usado 🔁" },
+        { "id": "oficina", "label": "Revisão / oficina 🔧" }
+      ],
+      "timeout_seconds": 3600,
+      "label": "Menu de intenção"
+    },
+
+    { "id": "tag_comprar", "type": "tag_add", "tag": "quer-comprar", "label": "Marca a intenção" },
+    { "id": "funil_qualif", "type": "pipeline", "pipeline": "39d702c7-4b4d-4d32-8a38-1c2d3231b589", "stage": "b5fe47b9-3e56-4040-9a02-4b83c42a3c26", "label": "Entra em Qualificação" },
+    {
+      "id": "ia_compra",
+      "type": "ai",
+      "prompt": "Você é a Júlia, consultora de vendas de uma concessionária de veículos no Brasil, falando por WhatsApp. Frases curtas, tom simpático e direto, UMA pergunta por vez — nunca um questionário. Reconheça o que o cliente disse antes de perguntar a próxima coisa. NUNCA invente preço, taxa de juros, valor de parcela, disponibilidade de modelo, prazo de entrega ou valor de avaliação do usado; se perguntarem, diga que o consultor confirma o número exato. Nunca prometa aprovação de financiamento.",
+      "goal": "Descobrir CINCO coisas ditas pelo próprio cliente: (1) qual modelo ou tipo de carro ele procura, ou que está aberto a sugestão; (2) se quer zero-km ou seminovo; (3) a faixa de valor que pretende investir; (4) se será à vista, financiado ou consórcio — e, se financiado, quanto pretende dar de entrada; (5) em quanto tempo pretende trocar de carro. Só marque o objetivo como atingido quando as cinco tiverem sido respondidas de fato pelo cliente, nunca por suposição.",
+      "max_exchanges": 6,
+      "timeout_seconds": 1800,
+      "save_to": "perfil_comprador",
+      "label": "IA · Consultora que qualifica"
+    },
+    { "id": "salva_perfil", "type": "crm_field", "field": "perfil_veiculo", "value": "{{perfil_comprador}}", "label": "Salva o perfil no CRM" },
+    { "id": "funil_quente", "type": "pipeline", "pipeline": "39d702c7-4b4d-4d32-8a38-1c2d3231b589", "stage": "c8226213-601d-4759-84ed-c499dc9ae656", "value": 80000, "label": "Vira negócio QUENTE" },
+    { "id": "rodizio", "type": "distribute", "team": "62d3c387-142b-4e8b-9ddf-6452edf971d0", "label": "Rodízio entre os vendedores" },
+    { "id": "txt_entrega", "type": "text", "text": "Perfeito, {{nome}}! 🙌 Já anotei tudo aqui.\n\nUm consultor da nossa equipe vai te chamar em instantes com as opções que batem com o que você me contou — fotos, valores e condições. Qualquer coisa, é só mandar mensagem!", "label": "Entrega o lead pronto" },
+    { "id": "fim_compra", "type": "end" },
+    { "id": "transfere_vendas", "type": "transfer", "assign_type": "team", "team": "62d3c387-142b-4e8b-9ddf-6452edf971d0", "note": "A IA não fechou a qualificação. Histórico completo na conversa — confirmar modelo, faixa de preço e forma de pagamento.", "label": "Humano assume" },
+
+    { "id": "tag_troca", "type": "tag_add", "tag": "quer-trocar-usado", "label": "Marca intenção de troca" },
+    { "id": "txt_pede_veiculo", "type": "text", "text": "Show! Pra avaliar seu carro direitinho, me manda numa mensagem só:\n\n• Modelo e versão\n• Ano do modelo\n• Quilometragem aproximada\n\nSe puder mandar uma foto do painel e da frente, ajuda bastante 📸", "label": "Pede os dados do usado" },
+    { "id": "aguarda_veiculo", "type": "input", "variable": "veiculo_troca", "timeout_seconds": 86400, "label": "Aguarda os dados do carro" },
+    { "id": "salva_veiculo", "type": "crm_field", "field": "veiculo_troca", "value": "{{veiculo_troca}}", "label": "Guarda o usado ofertado" },
+    { "id": "funil_troca", "type": "pipeline", "pipeline": "39d702c7-4b4d-4d32-8a38-1c2d3231b589", "stage": "f8c48c88-a0cc-49ba-b36b-d01f260299da", "label": "Vai para Avaliação" },
+    { "id": "transfere_avaliacao", "type": "transfer", "assign_type": "team", "team": "62d3c387-142b-4e8b-9ddf-6452edf971d0", "note": "Cliente quer avaliar o usado. Dados do veículo no campo veiculo_troca.", "label": "Entrega para avaliação" },
+
+    { "id": "tag_oficina", "type": "tag_add", "tag": "pos-venda-oficina", "label": "Marca pós-venda" },
+    { "id": "txt_pede_servico", "type": "text", "text": "Claro! Me conta em uma mensagem:\n\n• Modelo e ano do carro\n• O que você precisa (revisão, barulho, luz no painel, funilaria…)\n• Qual o melhor dia pra você trazer\n\nJá adianto pro nosso consultor de serviços 🔧", "label": "Pede o que precisa" },
+    { "id": "aguarda_servico", "type": "input", "variable": "servico_desejado", "timeout_seconds": 86400, "label": "Aguarda a descrição" },
+    { "id": "salva_servico", "type": "crm_field", "field": "servico_desejado", "value": "{{servico_desejado}}", "label": "Guarda o serviço pedido" },
+    { "id": "transfere_oficina", "type": "transfer", "assign_type": "team", "team": "62d3c387-142b-4e8b-9ddf-6452edf971d0", "note": "Agendamento de oficina. O que o cliente pediu está no campo servico_desejado.", "label": "Entrega à oficina" },
+
+    { "id": "espera", "type": "delay", "amount": 30, "unit": "minutes", "label": "Dá um tempo" },
+    { "id": "txt_resgate", "type": "text", "text": "Oi {{nome}}, ainda por aí? 😊\n\nSe preferir, me conta com suas palavras o que você está procurando que eu te ajudo daqui mesmo.", "label": "Reabre a conversa" },
+    { "id": "aguarda_resgate", "type": "input", "variable": "resposta_livre", "timeout_seconds": 172800, "label": "Aguarda resposta livre" },
+
+    { "id": "tag_frio", "type": "tag_add", "tag": "FRIO", "label": "Marca como frio" },
+    { "id": "funil_base", "type": "pipeline", "pipeline": "39d702c7-4b4d-4d32-8a38-1c2d3231b589", "stage": "36065a9e-8315-4c53-8f91-86d6acc9a4a7", "label": "Volta pra base" },
+    { "id": "fim_frio", "type": "end" }
+  ],
+  "connections": [
+    { "from": "inicio", "to": "typing1" },
+    { "from": "typing1", "to": "menu" },
+
+    { "from": "menu", "output": "comprar", "to": "tag_comprar" },
+    { "from": "tag_comprar", "to": "funil_qualif" },
+    { "from": "funil_qualif", "to": "ia_compra" },
+    { "from": "ia_compra", "output": "goal", "to": "salva_perfil" },
+    { "from": "salva_perfil", "to": "funil_quente" },
+    { "from": "funil_quente", "to": "rodizio" },
+    { "from": "rodizio", "to": "txt_entrega" },
+    { "from": "txt_entrega", "to": "fim_compra" },
+    { "from": "ia_compra", "output": "limit", "to": "transfere_vendas" },
+    { "from": "ia_compra", "output": "timeout", "to": "tag_frio" },
+
+    { "from": "menu", "output": "troca", "to": "tag_troca" },
+    { "from": "tag_troca", "to": "txt_pede_veiculo" },
+    { "from": "txt_pede_veiculo", "to": "aguarda_veiculo" },
+    { "from": "aguarda_veiculo", "output": "answered", "to": "salva_veiculo" },
+    { "from": "salva_veiculo", "to": "funil_troca" },
+    { "from": "funil_troca", "to": "transfere_avaliacao" },
+    { "from": "aguarda_veiculo", "output": "timeout", "to": "tag_frio" },
+
+    { "from": "menu", "output": "oficina", "to": "tag_oficina" },
+    { "from": "tag_oficina", "to": "txt_pede_servico" },
+    { "from": "txt_pede_servico", "to": "aguarda_servico" },
+    { "from": "aguarda_servico", "output": "answered", "to": "salva_servico" },
+    { "from": "salva_servico", "to": "transfere_oficina" },
+    { "from": "aguarda_servico", "output": "timeout", "to": "tag_frio" },
+
+    { "from": "menu", "output": "default", "to": "espera" },
+    { "from": "espera", "to": "txt_resgate" },
+    { "from": "txt_resgate", "to": "aguarda_resgate" },
+    { "from": "aguarda_resgate", "output": "answered", "to": "ia_compra" },
+    { "from": "aguarda_resgate", "output": "timeout", "to": "tag_frio" },
+
+    { "from": "tag_frio", "to": "funil_base" },
+    { "from": "funil_base", "to": "fim_frio" }
+  ]
+}
